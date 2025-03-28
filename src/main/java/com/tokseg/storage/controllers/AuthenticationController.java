@@ -1,12 +1,10 @@
 package com.tokseg.storage.controllers;
 
 
-import com.tokseg.storage.domain.user.AuthenticationDTO;
-import com.tokseg.storage.domain.user.RegisterDTO;
-import com.tokseg.storage.domain.user.ResponseLogin;
-import com.tokseg.storage.domain.user.User;
+import com.tokseg.storage.domain.user.*;
 import com.tokseg.storage.infra.security.TokenService;
 import com.tokseg.storage.repositories.UserRepository;
+import com.tokseg.storage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,8 +25,11 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    UserService service;
+
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody  AuthenticationDTO data){
+    public ResponseEntity login(@RequestBody @Validated AuthenticationDTO data){
         var auth = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.email(), data.password()));
 
         var token = tokenService.genareteToken((User) auth.getPrincipal());
@@ -48,5 +49,12 @@ public class AuthenticationController {
         this.repository.save(newUser);
 
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("/recoverpassword")
+    public ResponseEntity recoverPassword(@RequestBody @Validated RecoverPasswordDTO data){
+
+        String response = service.recoverPassword(data.email());
+
+        return ResponseEntity.ok(response);
     }
 }

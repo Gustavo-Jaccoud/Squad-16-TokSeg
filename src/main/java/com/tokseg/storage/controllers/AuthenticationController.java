@@ -1,7 +1,7 @@
 package com.tokseg.storage.controllers;
 
 
-import com.tokseg.storage.Response.ApiResponse;
+import com.tokseg.storage.response.ApiResponse;
 import com.tokseg.storage.domain.user.*;
 import com.tokseg.storage.domain.user.DTOs.AuthenticationDTO;
 import com.tokseg.storage.domain.user.DTOs.RecoverPasswordDTO;

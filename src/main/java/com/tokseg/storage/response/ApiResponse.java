@@ -1,4 +1,4 @@
-package com.tokseg.storage.Response;
+package com.tokseg.storage.response;
 
 public record ApiResponse<T>(
         String status,

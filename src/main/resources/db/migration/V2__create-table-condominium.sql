@@ -1,0 +1,6 @@
+CREATE TABLE "condominium"(
+    id UUID PRIMARY KEY,
+    address VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    telephone VARCHAR(20) NULL DEFAULT NULL
+)

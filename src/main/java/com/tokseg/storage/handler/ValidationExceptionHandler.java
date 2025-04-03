@@ -1,6 +1,6 @@
-package com.tokseg.storage.Handler;
+package com.tokseg.storage.handler;
 
-import com.tokseg.storage.Response.ApiResponse;
+import com.tokseg.storage.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;

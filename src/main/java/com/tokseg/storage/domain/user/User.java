@@ -26,14 +26,19 @@ public class User implements UserDetails {
     private UUID id;
     private String email;
     private String password;
+    private String name;
+    private String telephone;
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public User(String email, String password, UserRole role){
-        this.email = email;
-        this.password = password;
+    public User(UserRole role, String telephone, String name, String password, String email) {
         this.role = role;
+        this.telephone = telephone;
+        this.name = name;
+        this.password = password;
+        this.email = email;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));

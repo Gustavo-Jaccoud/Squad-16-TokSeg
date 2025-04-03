@@ -3,7 +3,8 @@ package com.tokseg.storage.domain.user;
 public enum UserRole {
 
     ADMIN("admin"),
-    RESIDENT("resident");
+    RESIDENT("resident"),
+    DELIVERYPERSON("deliveryPerson");
 
     private String role;
     UserRole(String role){

@@ -64,8 +64,4 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.success(response, "Email Enviado com sucesso"));
     }
-    @GetMapping("/teste")
-    public ResponseEntity<String> teste() {
-        return ResponseEntity.ok("Rota /teste funcionando!");
-    }
 }

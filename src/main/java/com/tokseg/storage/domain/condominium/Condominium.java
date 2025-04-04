@@ -2,8 +2,10 @@ package com.tokseg.storage.domain.condominium;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
@@ -13,6 +15,8 @@ import java.util.UUID;
 @Entity(name = "condominium")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Condominium {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

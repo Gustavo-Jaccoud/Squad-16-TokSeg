@@ -49,6 +49,7 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleGenericException(Exception ex) {
+        System.out.println(ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error("Erro interno no servidor"));
     }

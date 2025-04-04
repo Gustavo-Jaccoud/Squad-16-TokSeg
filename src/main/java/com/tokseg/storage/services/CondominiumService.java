@@ -7,7 +7,7 @@ import com.tokseg.storage.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
 
 @Service
 public class CondominiumService {

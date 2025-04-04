@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
 
 
 @Table(name = "condominium")

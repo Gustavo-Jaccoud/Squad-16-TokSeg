@@ -12,7 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
+
 
 @Table(name = "users")
 @Entity(name = "users")

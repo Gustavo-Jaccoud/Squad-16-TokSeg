@@ -1,33 +1,28 @@
-package com.tokseg.storage.domain.condominium;
-
+package com.tokseg.storage.domain.block;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import org.hibernate.validator.constraints.UUID;
 
 
-@Table(name = "condominium")
-@Entity(name = "condominium")
+@Table(name = "block")
+@Entity(name = "block")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Condominium {
+public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    private UUID condominium_id;
     private String name;
-    private String address;
-    private String telephone;
 
-    public Condominium(String name, String address, String telephone) {
+    public Block(String name, UUID condominium_id) {
+        this.condominium_id = condominium_id;
         this.name = name;
-        this.address = address;
-        this.telephone = telephone;
     }
 }

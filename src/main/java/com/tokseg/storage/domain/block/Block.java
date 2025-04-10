@@ -18,11 +18,12 @@ public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private UUID condominium_id;
+    @Column(name = "condominium_id")
+    private UUID condominiumId;
     private String name;
 
-    public Block(String name, UUID condominium_id) {
-        this.condominium_id = condominium_id;
+    public Block(String name, UUID condominiumId) {
+        this.condominiumId = condominiumId;
         this.name = name;
     }
 }

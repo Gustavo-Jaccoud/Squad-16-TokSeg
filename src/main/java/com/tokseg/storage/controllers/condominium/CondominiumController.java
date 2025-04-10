@@ -31,7 +31,7 @@ public class CondominiumController {
 
     @GetMapping("/{id}")
         public ResponseEntity getByIdCondominium(@PathVariable UUID id){
-            var response = condominiumService.GetByIdCondominium(id);
+            var response = condominiumService.getByIdCondominium(id);
             if (response.data() != null)
                 return ResponseEntity.status(HttpStatus.OK).body(response);
 

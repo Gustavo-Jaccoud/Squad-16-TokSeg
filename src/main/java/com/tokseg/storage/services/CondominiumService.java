@@ -25,7 +25,7 @@ public class CondominiumService {
         return ApiResponse.success(condominiumRepository.findAll(),"Todos os condominios");
     }
 
-    public ApiResponse GetByIdCondominium(UUID id){
+    public ApiResponse getByIdCondominium(UUID id){
         var response = condominiumRepository.findById(id);
         if (response.isPresent()) {
             return ApiResponse.success(response,"Condominio encontrado");

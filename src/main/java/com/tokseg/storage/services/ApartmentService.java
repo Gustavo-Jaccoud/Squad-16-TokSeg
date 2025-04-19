@@ -1,0 +1,52 @@
+package com.tokseg.storage.services;
+
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.tokseg.storage.domain.apartment.Apartment;
+import com.tokseg.storage.domain.apartment.DTOs.ApartmentDTO;
+import com.tokseg.storage.domain.block.Block;
+import com.tokseg.storage.domain.block.DTOs.BlockDTO;
+import com.tokseg.storage.repositories.ApartmentRepository;
+import com.tokseg.storage.repositories.BlockRepository;
+import com.tokseg.storage.repositories.UserRepository;
+import com.tokseg.storage.response.ApiResponse;
+
+@Service
+public class ApartmentService {
+    @Autowired
+    ApartmentRepository apartmentRepository;
+
+    @Autowired
+    BlockRepository blockRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    public ApiResponse createApartment(ApartmentDTO data) {
+
+        if (userExists(data.userId())) {
+
+            if (blockExists(data.blockId())) {
+                Apartment newApartment = new Apartment(data.blockId(), data.userId(), data.apartmentNumber());
+                apartmentRepository.save(newApartment);
+                return ApiResponse.success(null, "Bloco criado com sucesso");
+            }
+
+            return ApiResponse.error("Bloco não encontrado");
+        }
+        return ApiResponse.error("Usuário não encontrado");
+
+    }
+
+    private boolean blockExists(UUID id) {
+        return blockRepository.findById(id).isPresent();
+    }
+
+    private boolean userExists(UUID id) {
+        return userRepository.findById(id).isPresent();
+    }
+
+}

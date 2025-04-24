@@ -1,4 +1,4 @@
-package com.tokseg.storage.controllers;
+package com.tokseg.storage.controllers.auth;
 
 
 import com.tokseg.storage.response.ApiResponse;
@@ -8,7 +8,7 @@ import com.tokseg.storage.domain.user.DTOs.RecoverPasswordDTO;
 import com.tokseg.storage.domain.user.DTOs.RegisterDTO;
 import com.tokseg.storage.infra.security.TokenService;
 import com.tokseg.storage.repositories.UserRepository;
-import com.tokseg.storage.services.UserService;
+import com.tokseg.storage.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @Autowired
-    UserService service;
+    AuthService service;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {

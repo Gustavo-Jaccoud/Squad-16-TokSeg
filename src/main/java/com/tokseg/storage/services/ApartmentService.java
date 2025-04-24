@@ -32,13 +32,25 @@ public class ApartmentService {
             if (blockExists(data.blockId())) {
                 Apartment newApartment = new Apartment(data.blockId(), data.userId(), data.apartmentNumber());
                 apartmentRepository.save(newApartment);
-                return ApiResponse.success(null, "Bloco criado com sucesso");
+                return ApiResponse.success(null, "Apartamento criado com sucesso");
             }
 
             return ApiResponse.error("Bloco não encontrado");
         }
         return ApiResponse.error("Usuário não encontrado");
 
+    }
+
+    public ApiResponse getAllApartment(){
+        return ApiResponse.success(apartmentRepository.findAll(), "Todos os apartamentos");
+    }
+
+    public ApiResponse getByIdApartment(UUID id){
+        var response = apartmentRepository.findById(id);
+        if (response.isPresent()) {
+            return ApiResponse.success(response,"Apartamento encontrado");
+        }
+        return ApiResponse.error("Apartamento não encontrado");
     }
 
     private boolean blockExists(UUID id) {

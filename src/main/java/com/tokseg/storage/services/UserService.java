@@ -1,39 +1,29 @@
 package com.tokseg.storage.services;
 
+import com.tokseg.storage.domain.user.DTOs.UserDTO;
+import com.tokseg.storage.domain.user.User;
 import com.tokseg.storage.repositories.UserRepository;
+import com.tokseg.storage.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
     @Autowired
-    UserRepository repository;
-    public String recoverPassword(String email){
-        var user = repository.findByEmail(email);
-        if(user != null){
-            String newPassword = generateRandomPassword(6);
-            String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
-            user.setPassword(encryptedPassword);
-            repository.save(user);
-            return newPassword;
-        }
-        return "Erro ao tentar recuperar senha";
+    UserRepository userRepository;
+    public ApiResponse getAllUser(){
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
 
-    }
-
-    private static String generateRandomPassword(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        SecureRandom random = new SecureRandom();
-
-        StringBuilder password = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(characters.length());
-            password.append(characters.charAt(index));
+        for(User user : users){
+            userDTOs.add(new UserDTO(user.getId(), user.getName(), user.getEmail() , user.getRole() , user.getTelephone()));
         }
 
-        return password.toString();
+
+        return ApiResponse.success(userDTOs, "Todos os usuários");
     }
+
 }

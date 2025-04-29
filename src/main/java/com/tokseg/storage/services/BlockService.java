@@ -47,7 +47,7 @@ public class BlockService {
             var response = blockRepository.findByCondominiumId(id) ;
             return ApiResponse.success(response,"Todos os blocos desse condominio");
         }
-        return ApiResponse.error("Bloco não encontrado");
+        return ApiResponse.error("Condomínio não encontrado");
     }
 
     public ApiResponse updateBlock(UUID id , BlockDTO data){

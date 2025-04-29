@@ -53,6 +53,24 @@ public class ApartmentService {
         return ApiResponse.error("Apartamento não encontrado");
     }
 
+    public ApiResponse getByIdBlock(UUID id){
+
+        if (blockExists(id)) {
+            var response = apartmentRepository.findByBlockId(id) ;
+            return ApiResponse.success(response,"Todos os apartementos desse bloco");
+        }
+        return ApiResponse.error("Bloco não encontrado");
+    }
+
+    public ApiResponse getByIdUser(UUID id){
+
+        if (userExists(id)) {
+            var response = apartmentRepository.findByUserId(id) ;
+            return ApiResponse.success(response,"Apartamentos desse usuário");
+        }
+        return ApiResponse.error("Usuário não encontrado");
+    }
+
     private boolean blockExists(UUID id) {
         return blockRepository.findById(id).isPresent();
     }

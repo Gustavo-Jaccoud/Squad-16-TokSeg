@@ -18,26 +18,26 @@ public class CondominiumService {
 
         Condominium newCondominium = new Condominium(data.name(), data.address() , data.telephone());
         condominiumRepository.save(newCondominium);
-        return ApiResponse.success(null, "Condominio criado com sucesso");
+        return ApiResponse.success(null, "Condomínio criado com sucesso");
     }
 
     public ApiResponse getAllCondominium(){
-        return ApiResponse.success(condominiumRepository.findAll(),"Todos os condominios");
+        return ApiResponse.success(condominiumRepository.findAll(),"Todos os Condomínios");
     }
 
     public ApiResponse getByIdCondominium(UUID id){
         var response = condominiumRepository.findById(id);
         if (response.isPresent()) {
-            return ApiResponse.success(response,"Condominio encontrado");
+            return ApiResponse.success(response,"Condomínio encontrado");
         }
-        return ApiResponse.error("Condominio não encontrado");
+        return ApiResponse.error("Condomínio não encontrado");
     }
 
     public ApiResponse updateCondominio(UUID id, CondominiumDTO data){
         var condominio = condominiumRepository.findById(id);
 
         if (condominio == null){
-            return ApiResponse.error("Condominio não encontrado");
+            return ApiResponse.error("Condomínio não encontrado");
         }
 
         Condominium dataUpdateCondominio = condominio.get();
@@ -54,8 +54,8 @@ public class CondominiumService {
         var condominium = condominiumRepository.findById(id);
         if (condominium.isPresent()) {
             condominiumRepository.delete(condominium.get());
-            return ApiResponse.success(null,"Condominio deletado com sucesso");
+            return ApiResponse.success(null,"Condomínio deletado com sucesso");
         }
-        return ApiResponse.error("Condominio não encontrado");
+        return ApiResponse.error("Condomínio não encontrado");
     }
 }

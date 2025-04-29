@@ -41,4 +41,22 @@ public class ApartmentController {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @GetMapping("getByIdBlock/{id}")
+    public ResponseEntity getByIdblock(@PathVariable UUID id){
+        var response = apartmentService.getByIdBlock(id);
+        if (response.data() != null)
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @GetMapping("getByIdUser/{id}")
+    public ResponseEntity getByIdCondominium(@PathVariable UUID id){
+        var response = apartmentService.getByIdUser(id);
+        if (response.data() != null)
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
 }

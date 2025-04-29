@@ -52,7 +52,7 @@ public class BlockService {
 
     public ApiResponse updateBlock(UUID id , BlockDTO data){
         var block = blockRepository.findById(id);
-        if (block == null){
+        if (block.isEmpty()){
             return ApiResponse.error("Bloco não encontrado");
         }
         if(condominiumExists(data.condominiumId())){

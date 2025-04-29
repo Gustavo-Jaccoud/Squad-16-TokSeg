@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public record ApartmentDTO(
                 @NotBlank(message = "O numero do apartamento não pode estar em branco") String apartmentNumber,
 
-                @NotNull(message = "O id do usuário não pode estar em branco") UUID userId,
+                UUID userId,
 
                 @NotNull(message = "O id do bloco não pode estar em branco") UUID blockId) {
 }

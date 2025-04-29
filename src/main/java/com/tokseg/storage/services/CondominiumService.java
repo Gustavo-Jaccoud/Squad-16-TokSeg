@@ -36,7 +36,7 @@ public class CondominiumService {
     public ApiResponse updateCondominio(UUID id, CondominiumDTO data){
         var condominio = condominiumRepository.findById(id);
 
-        if (condominio == null){
+        if (condominio.isEmpty()){
             return ApiResponse.error("Condomínio não encontrado");
         }
 

@@ -71,6 +71,34 @@ public class ApartmentService {
         return ApiResponse.error("Usuário não encontrado");
     }
 
+    public ApiResponse updateApartment(UUID id , ApartmentDTO data){
+        var apartment = apartmentRepository.findById(id);
+        if (apartment.isEmpty()){
+            return ApiResponse.error("Apartamento não encontrado");
+        }
+        if(blockExists(data.blockId())){
+            if(userExists(data.userId())){
+                Apartment  dataUpdateApartment = apartment.get();
+                dataUpdateApartment.setApartmentNumber(data.apartmentNumber());
+                dataUpdateApartment.setBlockId(data.blockId());
+                dataUpdateApartment = apartmentRepository.save( dataUpdateApartment);
+                return ApiResponse.success( dataUpdateApartment,"Apartamento atualizado com sucesso");
+            }
+            return ApiResponse.error("Usuário não encontrado");
+        }
+        return ApiResponse.error("Bloco não encontrado");
+    }
+
+    public ApiResponse deleteApartment(UUID id){
+        var apartment = apartmentRepository.findById(id);
+        if (apartment.isPresent()){
+            apartmentRepository.delete(apartment.get());
+            return ApiResponse.success(null,"Apartamento deletado com sucesso");
+        }
+        return ApiResponse.error("Apartamento não encontrado");
+
+    }
+
     private boolean blockExists(UUID id) {
         return blockRepository.findById(id).isPresent();
     }

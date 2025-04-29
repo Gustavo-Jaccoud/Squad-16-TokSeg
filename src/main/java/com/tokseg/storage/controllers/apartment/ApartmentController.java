@@ -1,5 +1,6 @@
 package com.tokseg.storage.controllers.apartment;
 
+import com.tokseg.storage.domain.block.DTOs.BlockDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,25 @@ public class ApartmentController {
     @GetMapping("getByIdUser/{id}")
     public ResponseEntity getByIdCondominium(@PathVariable UUID id){
         var response = apartmentService.getByIdUser(id);
+        if (response.data() != null)
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateApartment(@PathVariable UUID id, @RequestBody @Valid ApartmentDTO data){
+        var response = apartmentService.updateApartment(id, data);
+        if (response.data() != null)
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteApartment(@PathVariable UUID id){
+        ApiResponse response = apartmentService.deleteApartment(id);
+
         if (response.data() != null)
             return ResponseEntity.status(HttpStatus.OK).body(response);
 

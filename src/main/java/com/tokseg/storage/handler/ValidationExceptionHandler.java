@@ -50,13 +50,18 @@ public class ValidationExceptionHandler {
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse> handleInvalidUUIDException(HttpMessageNotReadableException ex) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException invalidFormatEx) {
+            Object invalidValue = invalidFormatEx.getValue();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("Erro de formatação no UUID ( "+invalidValue +" ). O UUID deve ter 36 caracteres no formato padrão."));}
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error("Erro de formatação no UUID. O UUID deve ter 36 caracteres no formato padrão."));
     }
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error("Erro de formatação no UUID. O UUID deve ter 36 caracteres no formato padrão."));
+                    .body(ApiResponse.error("Erro de formatação no UUID ( "+ex.getValue() +" ). O UUID deve ter 36 caracteres no formato padrão."));
         }
 
     @ExceptionHandler(Exception.class)

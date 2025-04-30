@@ -32,7 +32,7 @@ public class ApartmentService {
             if (blockExists(data.blockId())) {
                 Apartment newApartment = new Apartment(data.blockId(), data.userId(), data.apartmentNumber());
                 apartmentRepository.save(newApartment);
-                return ApiResponse.success(null, "Apartamento criado com sucesso");
+                return ApiResponse.success(newApartment, "Apartamento criado com sucesso");
             }
 
             return ApiResponse.error("Bloco não encontrado");

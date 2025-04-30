@@ -18,7 +18,7 @@ public class CondominiumService {
 
         Condominium newCondominium = new Condominium(data.name(), data.address() , data.telephone());
         condominiumRepository.save(newCondominium);
-        return ApiResponse.success(null, "Condomínio criado com sucesso");
+        return ApiResponse.success(newCondominium, "Condomínio criado com sucesso");
     }
 
     public ApiResponse getAllCondominium(){

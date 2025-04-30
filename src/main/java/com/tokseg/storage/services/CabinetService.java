@@ -32,6 +32,26 @@ public class CabinetService {
 
     }
 
+    public ApiResponse getAllCabinet(){
+        return ApiResponse.success(cabinetRepository.findAll(), "Todos os armarios");
+    }
+
+    public ApiResponse getByIdCabinet(UUID id){
+        var response = cabinetRepository.findById(id);
+        if (response.isPresent()) {
+            return ApiResponse.success(response,"Armario encontrado");
+        }
+        return ApiResponse.error("Armario não encontrado");
+    }
+    public ApiResponse getByIdCondominium(UUID id){
+
+        if (condominiumExists(id)) {
+            var response = cabinetRepository.findByCondominiumId(id) ;
+            return ApiResponse.success(response,"Todos os Armarios desse condominio");
+        }
+        return ApiResponse.error("Condomínio não encontrado");
+    }
+
 
     private boolean condominiumExists(UUID id){
         return condominiumRepository.findById(id).isPresent();

@@ -24,7 +24,7 @@ public class BlockService {
 
             Block newBlock = new Block(data.name(), data.condominiumId());
             blockRepository.save(newBlock);
-            return ApiResponse.success(null, "Bloco criado com sucesso");
+            return ApiResponse.success(newBlock, "Bloco criado com sucesso");
         }
         return ApiResponse.error("Condominio não encontrado");
 

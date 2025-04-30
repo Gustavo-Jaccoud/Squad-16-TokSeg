@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CabinetRepository extends JpaRepository<Cabinet, UUID> {
-    List<Apartment> findByCondomiumId(UUID condominiumId);
+    List<Cabinet> findByCondominiumId(UUID condominiumId);
 }

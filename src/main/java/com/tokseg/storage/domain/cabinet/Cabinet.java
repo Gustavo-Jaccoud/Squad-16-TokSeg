@@ -20,12 +20,12 @@ public class Cabinet {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(name = "condominium_id")
-    private UUID condominiumID;
+    private UUID condominiumId;
     private String location;
     private boolean status;
 
-    public Cabinet(UUID condominiumID, String location,boolean status) {
-       this.condominiumID = condominiumID;
+    public Cabinet(UUID condominiumId, String location,boolean status) {
+       this.condominiumId = condominiumId;
        this.location = location;
        this.status = status;
     }

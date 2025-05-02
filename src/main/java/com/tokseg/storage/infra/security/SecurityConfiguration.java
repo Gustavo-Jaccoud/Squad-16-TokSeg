@@ -29,6 +29,11 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable()) // Desabilitar CSRF para APIs RESTful
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless para API REST
                 .authorizeHttpRequests(authorize -> authorize
+                                .requestMatchers(
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/recoverpassword").permitAll()
                                 .anyRequest().authenticated()

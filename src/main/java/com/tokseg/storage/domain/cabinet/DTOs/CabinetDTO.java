@@ -8,6 +8,9 @@ public record CabinetDTO(
         @NotNull(message = "O id do condominio não pode estar em branco")
         UUID condominiumId,
 
+        @NotNull(message = "O nome não pode estar em branco")
+        String name,
+
         @NotNull(message = "A localização não pode estar em branco")
         String location,
 

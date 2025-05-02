@@ -1,6 +1,5 @@
 package com.tokseg.storage.services;
 
-import com.tokseg.storage.domain.block.Block;
 import com.tokseg.storage.domain.cabinet.Cabinet;
 import com.tokseg.storage.domain.cabinet.DTOs.CabinetDTO;
 import com.tokseg.storage.repositories.CabinetRepository;
@@ -24,7 +23,7 @@ public class CabinetService {
 
         if (condominiumExists(data.condominiumId())) {
 
-            Cabinet newCabinet = new Cabinet(data.condominiumId(), data.location(), data.status());
+            Cabinet newCabinet = new Cabinet(data.condominiumId(), data.name(), data.location(), data.status());
             cabinetRepository.save(newCabinet);
             return ApiResponse.success(newCabinet, "Armario criado com sucesso");
         }
@@ -52,6 +51,32 @@ public class CabinetService {
         return ApiResponse.error("Condomínio não encontrado");
     }
 
+    public ApiResponse updateCabinet(UUID id , CabinetDTO data){
+        var cabinet = cabinetRepository.findById(id);
+        if (cabinet.isEmpty()){
+            return ApiResponse.error("Armario não encontrado");
+        }
+        if(condominiumExists(data.condominiumId())){
+            Cabinet  dataUpdateCabinet = cabinet.get();
+            dataUpdateCabinet.setName(data.name());
+            dataUpdateCabinet.setCondominiumId(data.condominiumId());
+            dataUpdateCabinet.setLocation(data.location());
+            dataUpdateCabinet.setStatus(data.status());
+            dataUpdateCabinet = cabinetRepository.save( dataUpdateCabinet);
+            return ApiResponse.success( dataUpdateCabinet,"Armario atualizado com sucesso");
+        }
+        return ApiResponse.error("Condominio não encontrado");
+    }
+
+    public ApiResponse deleteCabinet(UUID id){
+        var cabinet = cabinetRepository.findById(id);
+        if (cabinet.isPresent()){
+            cabinetRepository.delete(cabinet.get());
+            return ApiResponse.success(null,"Armario deletado com sucesso");
+        }
+        return ApiResponse.error("Armario não encontrado");
+
+    }
 
     private boolean condominiumExists(UUID id){
         return condominiumRepository.findById(id).isPresent();

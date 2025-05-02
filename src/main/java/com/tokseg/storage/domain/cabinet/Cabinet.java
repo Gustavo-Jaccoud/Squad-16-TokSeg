@@ -21,11 +21,13 @@ public class Cabinet {
     private UUID id;
     @Column(name = "condominium_id")
     private UUID condominiumId;
+    private String name;
     private String location;
     private boolean status;
 
-    public Cabinet(UUID condominiumId, String location,boolean status) {
+    public Cabinet(UUID condominiumId,String name, String location,boolean status) {
        this.condominiumId = condominiumId;
+       this.name = name;
        this.location = location;
        this.status = status;
     }

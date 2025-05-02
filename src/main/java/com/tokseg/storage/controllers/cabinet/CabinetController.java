@@ -1,5 +1,6 @@
 package com.tokseg.storage.controllers.cabinet;
 
+import com.tokseg.storage.domain.block.DTOs.BlockDTO;
 import com.tokseg.storage.domain.cabinet.DTOs.CabinetDTO;
 import com.tokseg.storage.response.ApiResponse;
 import com.tokseg.storage.services.CabinetService;
@@ -50,5 +51,24 @@ public class CabinetController {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateCabinet(@PathVariable UUID id, @RequestBody @Valid CabinetDTO data){
+        var response = cabinetService.updateCabinet(id, data);
+        if (response.data() != null)
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCabinet(@PathVariable UUID id){
+        ApiResponse response = cabinetService.deleteCabinet(id);
+
+        if (response.data() != null)
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
 
 }

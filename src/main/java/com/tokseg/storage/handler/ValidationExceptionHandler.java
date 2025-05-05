@@ -54,7 +54,7 @@ public class ValidationExceptionHandler {
         if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException invalidFormatEx) {
             Object invalidValue = invalidFormatEx.getValue();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error("Erro de formatação no UUID ( "+invalidValue +" ). O UUID deve ter 36 caracteres no formato padrão."));}
+                    .body(ApiResponse.error("Erro de formatação nesse valor ( "+invalidValue +" )."));}
         if (cause instanceof com.fasterxml.jackson.core.JsonParseException jsonParseException) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ApiResponse.error("Erro de leitura do corpo da requisição: JSON mal formatado. Verifique a sintaxe."));
@@ -69,7 +69,7 @@ public class ValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error("Erro de formatação no UUID ( "+ex.getValue() +" ). O UUID deve ter 36 caracteres no formato padrão."));
+                    .body(ApiResponse.error("A Erro de formatação no UUID ( "+ex.getValue() +" ). O UUID deve ter 36 caracteres no formato padrão."));
         }
 
     @ExceptionHandler(Exception.class)

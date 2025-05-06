@@ -9,6 +9,7 @@ import com.tokseg.storage.domain.user.DTOs.RegisterDTO;
 import com.tokseg.storage.infra.security.TokenService;
 import com.tokseg.storage.repositories.UserRepository;
 import com.tokseg.storage.services.AuthService;
+import com.tokseg.storage.services.AuthorizationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class AuthenticationController {
     @Autowired
     AuthService service;
 
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         var auth = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.email().toLowerCase(), data.password()));
@@ -46,17 +48,15 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
 
-        if (this.repository.findByEmail(data.email().toLowerCase())!=null){
-            return ResponseEntity.badRequest().build();
+        var user = service.registerUser(data);
+
+        if(user==null){
+            ResponseEntity.badRequest().build();
         }
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(UserRole.valueOf(data.role()), data.telephone(), data.name(), encryptedPassword, data.email().toLowerCase());
-
-        this.repository.save(newUser);
-
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
                 .body(ApiResponse.success(null, "Usuário Criado com sucesso"));
     }
+
     @PostMapping("/recoverpassword")
     public ResponseEntity recoverPassword(@RequestBody @Valid RecoverPasswordDTO data){
         String response = service.recoverPassword(data.email().toLowerCase());

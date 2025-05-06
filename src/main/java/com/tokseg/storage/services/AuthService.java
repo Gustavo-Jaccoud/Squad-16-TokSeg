@@ -1,5 +1,8 @@
 package com.tokseg.storage.services;
 
+import com.tokseg.storage.domain.user.DTOs.RegisterDTO;
+import com.tokseg.storage.domain.user.User;
+import com.tokseg.storage.domain.user.UserRole;
 import com.tokseg.storage.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,19 +13,30 @@ import java.security.SecureRandom;
 @Service
 public class AuthService {
     @Autowired
-    UserRepository repository;
+    UserRepository userRepository;
+
+    public User registerUser(RegisterDTO data){
+        if (userRepository.findByEmail(data.email().toLowerCase())!=null){
+            return null;
+        }
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        User newUser = new User(UserRole.valueOf(data.role()), data.telephone(), data.name(), encryptedPassword, data.email().toLowerCase());
+
+        return userRepository.save(newUser);
+    }
     public String recoverPassword(String email){
-        var user = repository.findByEmail(email);
+        var user = userRepository.findByEmail(email);
         if(user != null){
             String newPassword = generateRandomPassword(6);
             String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
             user.setPassword(encryptedPassword);
-            repository.save(user);
+            userRepository.save(user);
             return newPassword;
         }
         return "Erro ao tentar recuperar senha";
 
     }
+
 
     private static String generateRandomPassword(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

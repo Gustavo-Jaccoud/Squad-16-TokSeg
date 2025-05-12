@@ -2,6 +2,7 @@ package com.tokseg.storage.services;
 
 import com.tokseg.storage.domain.block.Block;
 import com.tokseg.storage.domain.block.DTOs.BlockDTO;
+import com.tokseg.storage.domain.condominium.Condominium;
 import com.tokseg.storage.repositories.BlockRepository;
 import com.tokseg.storage.repositories.CondominiumRepository;
 import com.tokseg.storage.response.ApiResponse;
@@ -21,8 +22,8 @@ public class BlockService {
     public ApiResponse createBlock(BlockDTO data){
 
         if (condominiumExists(data.condominiumId())) {
-
-            Block newBlock = new Block(data.name(), data.condominiumId());
+            Condominium condominium = condominiumRepository.findById(data.condominiumId()).get();
+            Block newBlock = new Block(data.name(),condominium);
             blockRepository.save(newBlock);
             return ApiResponse.success(newBlock, "Bloco criado com sucesso");
         }
@@ -56,9 +57,11 @@ public class BlockService {
             return ApiResponse.error("Bloco não encontrado");
         }
         if(condominiumExists(data.condominiumId())){
+            Condominium condominium = condominiumRepository.findById(data.condominiumId()).get();
+            condominium.setId(data.condominiumId());
             Block  dataUpdateBlock = block.get();
              dataUpdateBlock.setName(data.name());
-             dataUpdateBlock.setCondominiumId(data.condominiumId());
+             dataUpdateBlock.setCondominium(condominium);
              dataUpdateBlock = blockRepository.save( dataUpdateBlock);
             return ApiResponse.success( dataUpdateBlock,"Bloco atualizado com sucesso");
         }

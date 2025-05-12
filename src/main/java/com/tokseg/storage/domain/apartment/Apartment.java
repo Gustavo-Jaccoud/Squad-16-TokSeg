@@ -1,6 +1,11 @@
 package com.tokseg.storage.domain.apartment;
 
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tokseg.storage.domain.block.Block;
+import com.tokseg.storage.domain.user.User;
 import jakarta.persistence.*;
 
 import jakarta.persistence.Column;
@@ -12,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Table(name = "apartment")
 @Entity(name = "apartment")
@@ -19,19 +26,36 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"user","block"})
 public class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "block_id")
-    private UUID blockId;
-    @Column(name = "user_id")
-    private UUID userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "block_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Block block;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private User user;
+
+    @JsonProperty("blockId")
+    public UUID getBlockId() {
+        return block != null ? block.getId() : null;
+    }
+
+    @JsonProperty("userId")
+    public UUID getUserId() {
+        return user != null ? user.getId() : null;
+    }
     private String apartmentNumber;
 
-    public Apartment(UUID blockId, UUID userId, String apartmentNumber) {
-        this.blockId = blockId;
-        this.userId = userId;
+    public Apartment(Block block, User user, String apartmentNumber) {
+        this.block = block;
+        this.user = user;
         this.apartmentNumber = apartmentNumber;
     }
 

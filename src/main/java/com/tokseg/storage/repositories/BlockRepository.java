@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BlockRepository extends JpaRepository<Block, UUID> {
-    List<Block> findByCondominiumId(UUID condominiumId);
+    List<Block> findByCondominium_Id(UUID condominiumId);
 }

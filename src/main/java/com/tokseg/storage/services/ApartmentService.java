@@ -2,17 +2,18 @@ package com.tokseg.storage.services;
 
 import java.util.UUID;
 
+import com.tokseg.storage.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tokseg.storage.domain.apartment.Apartment;
 import com.tokseg.storage.domain.apartment.DTOs.ApartmentDTO;
 import com.tokseg.storage.domain.block.Block;
-import com.tokseg.storage.domain.block.DTOs.BlockDTO;
 import com.tokseg.storage.repositories.ApartmentRepository;
 import com.tokseg.storage.repositories.BlockRepository;
 import com.tokseg.storage.repositories.UserRepository;
 import com.tokseg.storage.response.ApiResponse;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ApartmentService {
@@ -30,7 +31,10 @@ public class ApartmentService {
         if (userExists(data.userId())) {
 
             if (blockExists(data.blockId())) {
-                Apartment newApartment = new Apartment(data.blockId(), data.userId(), data.apartmentNumber());
+                Block block = blockRepository.findById(data.blockId()).get();
+                User user = userRepository.findById(data.userId()).get();
+
+                Apartment newApartment = new Apartment(block,user, data.apartmentNumber());
                 apartmentRepository.save(newApartment);
                 return ApiResponse.success(newApartment, "Apartamento criado com sucesso");
             }
@@ -40,7 +44,7 @@ public class ApartmentService {
         return ApiResponse.error("Usuário não encontrado");
 
     }
-
+    @Transactional
     public ApiResponse getAllApartment(){
         return ApiResponse.success(apartmentRepository.findAll(), "Todos os apartamentos");
     }
@@ -56,7 +60,7 @@ public class ApartmentService {
     public ApiResponse getByIdBlock(UUID id){
 
         if (blockExists(id)) {
-            var response = apartmentRepository.findByBlockId(id) ;
+            var response = apartmentRepository.findByBlock_Id(id) ;
             return ApiResponse.success(response,"Todos os apartementos desse bloco");
         }
         return ApiResponse.error("Bloco não encontrado");
@@ -65,7 +69,7 @@ public class ApartmentService {
     public ApiResponse getByIdUser(UUID id){
 
         if (userExists(id)) {
-            var response = apartmentRepository.findByUserId(id) ;
+            var response = apartmentRepository.findByUser_Id(id) ;
             return ApiResponse.success(response,"Apartamentos desse usuário");
         }
         return ApiResponse.error("Usuário não encontrado");
@@ -78,9 +82,14 @@ public class ApartmentService {
         }
         if(blockExists(data.blockId())){
             if(userExists(data.userId())){
+
+                Block block = blockRepository.findById(data.blockId()).get();
+                User user = userRepository.findById(data.userId()).get();
+
                 Apartment  dataUpdateApartment = apartment.get();
                 dataUpdateApartment.setApartmentNumber(data.apartmentNumber());
-                dataUpdateApartment.setBlockId(data.blockId());
+                dataUpdateApartment.setBlock(block);
+                dataUpdateApartment.setUser(user);
                 dataUpdateApartment = apartmentRepository.save( dataUpdateApartment);
                 return ApiResponse.success( dataUpdateApartment,"Apartamento atualizado com sucesso");
             }

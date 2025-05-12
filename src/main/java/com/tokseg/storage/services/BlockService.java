@@ -45,7 +45,7 @@ public class BlockService {
     public ApiResponse getByIdCondominium(UUID id){
 
         if (condominiumExists(id)) {
-            var response = blockRepository.findByCondominiumId(id) ;
+            var response = blockRepository.findByCondominium_Id(id) ;
             return ApiResponse.success(response,"Todos os blocos desse condominio");
         }
         return ApiResponse.error("Condomínio não encontrado");

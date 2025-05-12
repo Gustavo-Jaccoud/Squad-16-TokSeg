@@ -1,5 +1,7 @@
 package com.tokseg.storage.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tokseg.storage.domain.apartment.Apartment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +33,9 @@ public class User implements UserDetails {
     private String telephone;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private Apartment apartments;
 
     public User(UserRole role, String telephone, String name, String password, String email) {
         this.role = role;

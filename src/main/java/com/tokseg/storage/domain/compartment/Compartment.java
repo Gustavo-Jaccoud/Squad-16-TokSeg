@@ -1,6 +1,8 @@
 package com.tokseg.storage.domain.compartment;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tokseg.storage.domain.cabinet.Cabinet;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,21 +17,34 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
+@JsonIgnoreProperties({"cabinet"})
 public class Compartment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "cabinet_id")
-    private UUID cabinetId;
+
+    @ManyToOne
+    @JoinColumn(name = "cabinet_id", nullable = false)
+    private Cabinet cabinet;
+
+    @JsonProperty("cabinetId")
+    public UUID getCabinetId() {
+        return cabinet != null ? cabinet.getId() : null;
+    }
+
+    @Column(nullable = false)
     private String name;
+
     @Enumerated(EnumType.STRING)
     private CompartmentSize size;
     @JsonProperty("isOccupied")
-    @Column(name = "is_occupied")
+
+    @Column(name = "is_occupied", nullable = false)
     private boolean isOccupied;
 
-    public Compartment(UUID cabinetId, String name, CompartmentSize size, boolean isOccupied) {
-        this.cabinetId = cabinetId;
+    public Compartment(Cabinet cabinet, String name, CompartmentSize size, boolean isOccupied) {
+        this.cabinet = cabinet;
         this.name = name;
         this.size = size;
         this.isOccupied = isOccupied;

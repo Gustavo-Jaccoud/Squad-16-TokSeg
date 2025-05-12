@@ -1,7 +1,9 @@
 package com.tokseg.storage.domain.cabinet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tokseg.storage.domain.compartment.Compartment;
 import com.tokseg.storage.domain.condominium.Condominium;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
 import java.util.UUID;
 
 @Table(name = "cabinet")
@@ -45,6 +48,10 @@ public class Cabinet {
 
     @Column(nullable = false)
     private boolean status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cabinet", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Compartment> compartments;
 
     public Cabinet(Condominium condominium,String name, String location,boolean status) {
        this.condominium = condominium;

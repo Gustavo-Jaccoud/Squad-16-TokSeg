@@ -1,7 +1,6 @@
 package com.tokseg.storage.services;
 
 import com.tokseg.storage.domain.cabinet.Cabinet;
-import com.tokseg.storage.domain.cabinet.DTOs.CabinetDTO;
 import com.tokseg.storage.domain.compartment.Compartment;
 import com.tokseg.storage.domain.compartment.DTOs.CompartmentDTO;
 import com.tokseg.storage.repositories.CabinetRepository;
@@ -27,7 +26,8 @@ public class CompartmentService {
 
         if (cabinetExists(data.cabinetId())) {
 
-            Compartment newCompartment = new Compartment(data.cabinetId(), data.name(), data.size(), data.isOccupied());
+            Cabinet cabinet = cabinetRepository.findById(data.cabinetId()).get();
+            Compartment newCompartment = new Compartment(cabinet, data.name(), data.size(), data.isOccupied());
             compartmentRepository.save(newCompartment);
             return ApiResponse.success(newCompartment, "Compartimento criado com sucesso");
         }
@@ -48,7 +48,7 @@ public class CompartmentService {
     public ApiResponse getByIdCabinet(UUID id){
 
         if (cabinetExists(id)) {
-            var response = compartmentRepository.findByCabinetId(id) ;
+            var response = compartmentRepository.findByCabinet_Id(id) ;
             return ApiResponse.success(response,"Todos os compartimentos desse armario");
         }
         return ApiResponse.error("Armario não encontrado");
@@ -61,8 +61,9 @@ public class CompartmentService {
         }
         if(cabinetExists(data.cabinetId())){
             Compartment dataUpdateCompartment = compartment.get();
+            Cabinet cabinet = cabinetRepository.findById(data.cabinetId()).get();
             dataUpdateCompartment.setName(data.name());
-            dataUpdateCompartment.setCabinetId(data.cabinetId());
+            dataUpdateCompartment.setCabinet(cabinet);
             dataUpdateCompartment.setSize(data.size());
             dataUpdateCompartment.setOccupied(data.isOccupied());
             dataUpdateCompartment = compartmentRepository.save( dataUpdateCompartment);

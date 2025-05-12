@@ -2,6 +2,7 @@ package com.tokseg.storage.services;
 
 import com.tokseg.storage.domain.cabinet.Cabinet;
 import com.tokseg.storage.domain.cabinet.DTOs.CabinetDTO;
+import com.tokseg.storage.domain.condominium.Condominium;
 import com.tokseg.storage.repositories.CabinetRepository;
 import com.tokseg.storage.repositories.CondominiumRepository;
 import com.tokseg.storage.response.ApiResponse;
@@ -22,8 +23,8 @@ public class CabinetService {
 
 
         if (condominiumExists(data.condominiumId())) {
-
-            Cabinet newCabinet = new Cabinet(data.condominiumId(), data.name(), data.location(), data.status());
+            Condominium condominium = condominiumRepository.findById(data.condominiumId()).get();
+            Cabinet newCabinet = new Cabinet(condominium, data.name(), data.location(), data.status());
             cabinetRepository.save(newCabinet);
             return ApiResponse.success(newCabinet, "Armario criado com sucesso");
         }
@@ -45,7 +46,7 @@ public class CabinetService {
     public ApiResponse getByIdCondominium(UUID id){
 
         if (condominiumExists(id)) {
-            var response = cabinetRepository.findByCondominiumId(id) ;
+            var response = cabinetRepository.findByCondominium_Id(id) ;
             return ApiResponse.success(response,"Todos os Armarios desse condominio");
         }
         return ApiResponse.error("Condomínio não encontrado");
@@ -58,8 +59,9 @@ public class CabinetService {
         }
         if(condominiumExists(data.condominiumId())){
             Cabinet  dataUpdateCabinet = cabinet.get();
+            Condominium condominium = condominiumRepository.findById(data.condominiumId()).get();
             dataUpdateCabinet.setName(data.name());
-            dataUpdateCabinet.setCondominiumId(data.condominiumId());
+            dataUpdateCabinet.setCondominium(condominium);
             dataUpdateCabinet.setLocation(data.location());
             dataUpdateCabinet.setStatus(data.status());
             dataUpdateCabinet = cabinetRepository.save( dataUpdateCabinet);

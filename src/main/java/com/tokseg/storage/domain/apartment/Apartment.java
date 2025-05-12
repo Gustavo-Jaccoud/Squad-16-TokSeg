@@ -51,6 +51,7 @@ public class Apartment {
     public UUID getUserId() {
         return user != null ? user.getId() : null;
     }
+    @Column(nullable = false)
     private String apartmentNumber;
 
     public Apartment(Block block, User user, String apartmentNumber) {

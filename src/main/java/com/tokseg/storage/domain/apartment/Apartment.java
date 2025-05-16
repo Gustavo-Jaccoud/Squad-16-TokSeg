@@ -1,10 +1,13 @@
 package com.tokseg.storage.domain.apartment;
 
+import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tokseg.storage.domain.block.Block;
+import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
 import com.tokseg.storage.domain.user.User;
 import jakarta.persistence.*;
 
@@ -53,6 +56,10 @@ public class Apartment {
     }
     @Column(nullable = false)
     private String apartmentNumber;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DeliveryPackage> deliveryPackages;
 
     public Apartment(Block block, User user, String apartmentNumber) {
         this.block = block;

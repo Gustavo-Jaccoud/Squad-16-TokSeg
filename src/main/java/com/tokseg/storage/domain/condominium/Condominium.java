@@ -2,6 +2,7 @@ package com.tokseg.storage.domain.condominium;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tokseg.storage.domain.cabinet.Cabinet;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class Condominium {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String address;
 
@@ -36,6 +37,10 @@ public class Condominium {
     @JsonIgnore
     @OneToMany(mappedBy = "condominium", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Block> blocks;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "condominium", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cabinet> cabinets;
 
     public Condominium(String name, String address, String telephone) {
         this.name = name;

@@ -1,14 +1,17 @@
 package com.tokseg.storage.domain.compartment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tokseg.storage.domain.cabinet.Cabinet;
+import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Table(name = "compartment")
@@ -42,6 +45,10 @@ public class Compartment {
 
     @Column(name = "is_occupied", nullable = false)
     private boolean isOccupied;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "compartment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DeliveryPackage> deliveryPackages;
 
     public Compartment(Cabinet cabinet, String name, CompartmentSize size, boolean isOccupied) {
         this.cabinet = cabinet;

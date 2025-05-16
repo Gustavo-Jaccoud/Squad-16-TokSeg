@@ -1,7 +1,11 @@
 package com.tokseg.storage.services;
 
+import com.tokseg.storage.domain.apartment.Apartment;
+import com.tokseg.storage.domain.cabinet.Cabinet;
+import com.tokseg.storage.domain.compartment.Compartment;
 import com.tokseg.storage.domain.deliveryPackage.DTOs.DeliveryPackageDTO;
 import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
+import com.tokseg.storage.domain.deliveryPerson.DeliveryPerson;
 import com.tokseg.storage.repositories.ApartmentRepository;
 import com.tokseg.storage.repositories.CompartmentRepository;
 import com.tokseg.storage.repositories.DeliveryPackageRepository;
@@ -38,8 +42,10 @@ public class DeliveryPackageService {
         if(!compartmentExists(data.compartmentId())){
             return ApiResponse.error("Compartimento não encontrado");
         }
-
-        DeliveryPackage newDeliveryPackage = new DeliveryPackage(data.deliveryPersonId(),data.compartmentId(),data.apartmentId());
+        DeliveryPerson deliveryPerson = deliveryPersonRepository.findById(data.deliveryPersonId()).get();
+        Compartment compartment = compartmentRepository.findById(data.compartmentId()).get();
+        Apartment apartment = apartmentRepository.findById(data.apartmentId()).get();
+        DeliveryPackage newDeliveryPackage = new DeliveryPackage(deliveryPerson,compartment,apartment);
 
         deliveryPackageRepository.save(newDeliveryPackage);
 

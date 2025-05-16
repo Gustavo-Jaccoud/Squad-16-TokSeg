@@ -40,7 +40,7 @@ public class DeliveryPersonService {
              return  ApiResponse.error("O entregador já possui uma conta");
         }
 
-        DeliveryPerson newDeliveryPerson = new DeliveryPerson(user.getId(),data.cpf());
+        DeliveryPerson newDeliveryPerson = new DeliveryPerson(user,data.cpf());
         deliveryPersonRepository.save(newDeliveryPerson);
         return ApiResponse.success(newDeliveryPerson, "Entregador criado com sucesso");
 

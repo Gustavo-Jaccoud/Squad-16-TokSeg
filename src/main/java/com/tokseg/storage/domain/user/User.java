@@ -2,6 +2,7 @@ package com.tokseg.storage.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tokseg.storage.domain.apartment.Apartment;
+import com.tokseg.storage.domain.deliveryPerson.DeliveryPerson;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,15 +28,25 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String telephone;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
     @JsonIgnore
     @OneToOne(mappedBy = "user")
-    private Apartment apartments;
+    private Apartment apartment;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private DeliveryPerson deliveryPerson;
 
     public User(UserRole role, String telephone, String name, String password, String email) {
         this.role = role;

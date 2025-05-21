@@ -20,7 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api/v1/auth")
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;

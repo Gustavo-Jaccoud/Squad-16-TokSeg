@@ -69,7 +69,7 @@ public class ApartmentService {
     public ApiResponse getByIdUser(UUID id){
 
         if (userExists(id)) {
-            var response = apartmentRepository.findByUser_Id(id) ;
+            var response = apartmentRepository.findByOwnerId(id) ;
             return ApiResponse.success(response,"Apartamentos desse usuário");
         }
         return ApiResponse.error("Usuário não encontrado");

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("deliverypackage")
+@RequestMapping("api/v1/deliverypackage")
 public class DeliveryPackageController {
     @Autowired
     DeliveryPackageService deliveryPackageService;

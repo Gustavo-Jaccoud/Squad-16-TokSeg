@@ -2,6 +2,7 @@ package com.tokseg.storage.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tokseg.storage.domain.apartment.Apartment;
+import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
 import com.tokseg.storage.domain.deliveryPerson.DeliveryPerson;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,11 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private DeliveryPerson deliveryPerson;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "pickedUpBy")
+    private DeliveryPackage deliveryPackage;
+
 
     public User(UserRole role, String telephone, String name, String password, String email) {
         this.role = role;

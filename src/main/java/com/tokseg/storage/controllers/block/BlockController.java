@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("block")
+@RequestMapping("api/v1/block")
 public class BlockController {
     @Autowired
     BlockService blockService;

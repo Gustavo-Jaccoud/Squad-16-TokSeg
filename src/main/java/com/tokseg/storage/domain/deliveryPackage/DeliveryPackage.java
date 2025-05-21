@@ -7,6 +7,7 @@ import com.tokseg.storage.domain.apartment.Apartment;
 import com.tokseg.storage.domain.compartment.Compartment;
 import com.tokseg.storage.domain.deliveryPerson.DeliveryPerson;
 import com.tokseg.storage.domain.notification.Notification;
+import com.tokseg.storage.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"deliveryPerson", "compartment", "apartment"})
+@JsonIgnoreProperties({"deliveryPerson", "compartment", "apartment", "pickedUpBy"})
 public class DeliveryPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -69,6 +70,18 @@ public class DeliveryPackage {
     @Enumerated(EnumType.STRING)
     @Column(name="status")
     private PackageStatus packageStatus;
+    @Column(nullable = true)
+    private LocalDateTime pickupDatetime;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pickedUpBy", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private User pickedUpBy;
+
+    @JsonProperty("pickedUpBy")
+    public UUID getUserId() {
+        return pickedUpBy != null ? pickedUpBy.getId() : null;
+    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "deliveryPackage", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("apartment")
+@RequestMapping("api/v1/apartment")
 public class ApartmentController {
     @Autowired
     ApartmentService apartmentService;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("cabinet")
+@RequestMapping("api/v1/cabinet")
 public class CabinetController {
     @Autowired
     CabinetService cabinetService;

@@ -37,11 +37,18 @@ public class Notification {
 
     @Column(nullable = false)
     private LocalDateTime sentDatetime;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private NotificationStatus notificationStatus;
 
-    public Notification(DeliveryPackage deliveryPackage, NotificationStatus notificationStatus) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type",nullable = false)
+    private NotificationType notificationType;
+
+    public Notification(DeliveryPackage deliveryPackage, NotificationStatus notificationStatus, NotificationType notificationType) {
         this.deliveryPackage = deliveryPackage;
         this.notificationStatus = notificationStatus;
+        this.notificationType = notificationType;
     }
 }

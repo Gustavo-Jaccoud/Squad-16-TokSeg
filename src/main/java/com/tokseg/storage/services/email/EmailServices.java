@@ -1,12 +1,10 @@
-package com.tokseg.storage.services;
+package com.tokseg.storage.services.email;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.tokseg.storage.domain.email.DTOs.EmailDTO;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -17,27 +15,28 @@ public class EmailServices {
     @Autowired
     JavaMailSender mailSender;
 
-    public void sendEmail(EmailDTO email) {
+    public boolean sendEmail(String to, String subject, String body, boolean isHtml) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
 
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             helper.setFrom("noreplay.storage@tokseg.com");
-            helper.setTo(email.to());
-            helper.setSubject(email.subject());
+            helper.setTo(to);
+            helper.setSubject(subject);
 
-            if (email.isHtml()) {
-                helper.setText(email.body(), true);
+            if (isHtml) {
+                helper.setText(body, true);
             } else {
-                helper.setText(email.body(), false);
+                helper.setText(body, false);
             }
 
             mailSender.send(mimeMessage);
+            return true;
 
         } catch (MessagingException e) {
-
             throw new RuntimeException("Erro ao enviar e-mail", e);
+
         }
     }
 

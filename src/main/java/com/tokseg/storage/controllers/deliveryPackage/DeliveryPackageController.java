@@ -1,6 +1,6 @@
 package com.tokseg.storage.controllers.deliveryPackage;
 
-import com.tokseg.storage.domain.deliveryPackage.DTOs.DeliveryPackageDTO;
+import com.tokseg.storage.domain.deliveryPackage.DTOs.*;
 import com.tokseg.storage.response.ApiResponse;
 import com.tokseg.storage.services.DeliveryPackageService;
 import jakarta.validation.Valid;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("api/v1/deliverypackage")
@@ -31,4 +32,14 @@ public class DeliveryPackageController {
     public ResponseEntity getAllDeliveryPackage(){
         return ResponseEntity.status(HttpStatus.OK).body(deliveryPackageService.getAllDeliveryPackage());
     }
+
+    @PostMapping("/pickUpDeliveryPackage")
+    public ResponseEntity<ApiResponse> pickUpDeliveryPackage(@RequestBody @Valid PickUpDeliveryPackageDTO data) {
+        ApiResponse response = deliveryPackageService.pickUpDeliveryPackage(data);
+        if (response.data() != null) {
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
 }

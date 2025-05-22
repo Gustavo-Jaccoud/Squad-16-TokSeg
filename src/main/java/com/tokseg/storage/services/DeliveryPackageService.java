@@ -3,20 +3,27 @@ package com.tokseg.storage.services;
 import com.tokseg.storage.domain.apartment.Apartment;
 import com.tokseg.storage.domain.compartment.Compartment;
 import com.tokseg.storage.domain.deliveryPackage.DTOs.DeliveryPackageDTO;
+import com.tokseg.storage.domain.deliveryPackage.DTOs.PickUpDeliveryPackageDTO;
 import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
+import com.tokseg.storage.domain.deliveryPackage.PackageStatus;
 import com.tokseg.storage.domain.deliveryPerson.DeliveryPerson;
-import com.tokseg.storage.domain.email.DTOs.EmailDTO;
-import com.tokseg.storage.repositories.ApartmentRepository;
-import com.tokseg.storage.repositories.CompartmentRepository;
-import com.tokseg.storage.repositories.DeliveryPackageRepository;
-import com.tokseg.storage.repositories.DeliveryPersonRepository;
+import com.tokseg.storage.domain.notification.DTOs.NotificationDTO;
+import com.tokseg.storage.domain.notification.NotificationStatus;
+import com.tokseg.storage.domain.notification.NotificationType;
+import com.tokseg.storage.domain.user.User;
+import com.tokseg.storage.domain.user.UserRole;
+import com.tokseg.storage.repositories.*;
 import com.tokseg.storage.response.ApiResponse;
+import com.tokseg.storage.services.email.EmailContentBuilder;
+import com.tokseg.storage.services.email.EmailServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.UUID;
+import java.util.Optional;
 
 @Service
 public class DeliveryPackageService {
@@ -35,6 +42,15 @@ public class DeliveryPackageService {
 
     @Autowired
     EmailServices emailServices;
+
+    @Autowired
+    EmailContentBuilder emailContentBuilder;
+
+    @Autowired
+    NotificationService notificationService;
+
+    @Autowired
+    UserRepository userRepository;
 
     public ApiResponse createDeliveryPackage(DeliveryPackageDTO data) {
 
@@ -64,6 +80,56 @@ public class DeliveryPackageService {
         return ApiResponse.success(deliveryPackageRepository.findAll(), "Todos as entregas");
     }
 
+    public ApiResponse pickUpDeliveryPackage(PickUpDeliveryPackageDTO data) {
+
+        String password = new BCryptPasswordEncoder().encode(data.password());
+        Optional<DeliveryPackage> optionalPackage =
+                deliveryPackageRepository.findTopByCompartment_IdOrderByDeliveryDatetimeDesc(data.compartmentId());
+
+        if (optionalPackage.isEmpty()) {
+            return ApiResponse.error("Nenhuma encomenda encontrada para este compartimento.");
+        }
+
+        DeliveryPackage deliveryPackage = optionalPackage.get();
+        User owner = deliveryPackage.getApartment().getOwner();
+
+
+        boolean isOwner = owner.getUsername().equals(data.username()) && owner.getPassword().equals(password);
+
+        System.out.println(owner.getUsername());
+        System.out.println(data.username());
+        System.out.println(owner.getPassword());
+        System.out.println(password);
+
+        if (!isOwner) {
+
+            User admin = userRepository.findByEmail(data.username());
+            if (admin != null && admin.getPassword().equals(password) && admin.getRole() == UserRole.ADMIN) {
+
+                if (deliveryPackage.getDeliveryDatetime().isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))) {
+                    deliveryPackage.setPickupDatetime(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+                    deliveryPackage.setPickedUpBy(admin);
+                    deliveryPackage.setPackageStatus(PackageStatus.PICKED_UP);
+                    deliveryPackageRepository.save(deliveryPackage);
+                    return ApiResponse.success(deliveryPackage.getId(), "Encomenda retirada pela administração.");
+                } else {
+                    return ApiResponse.error("A encomenda ainda está dentro do prazo, apenas o morador pode retirar.");
+                }
+            }
+
+            return ApiResponse.error("Credenciais inválidas.");
+        }
+
+
+        deliveryPackage.setPickupDatetime(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+        deliveryPackage.setPickedUpBy(owner);
+        deliveryPackage.setPackageStatus(PackageStatus.PICKED_UP);
+        deliveryPackageRepository.save(deliveryPackage);
+
+        return ApiResponse.success(deliveryPackage.getId(), "Encomenda retirada com sucesso pelo proprietário.");
+    }
+
+
     private boolean deliveryPersonExists(UUID id) {
         return deliveryPersonRepository.findById(id).isPresent();
     }
@@ -77,64 +143,15 @@ public class DeliveryPackageService {
     }
 
     private void sendEmailDelivery(DeliveryPackage deliveryPackage) {
-        String nameResident = deliveryPackage.getApartment().getOwner().getName();
-        String nameDeliveryPerson = deliveryPackage.getDeliveryPerson().getUser().getName();
-        LocalDateTime deliveryDateTime = deliveryPackage.getDeliveryDatetime();
-        LocalDateTime maxPickDateTime = deliveryPackage.getMaxPickupDatetime();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
-
         String to = deliveryPackage.getApartment().getOwner().getEmail();
         String subject = "Tokseg | Storage - Você recebeu uma nova encomenda!";
+        String body = emailContentBuilder.buildDeliveryNotification(deliveryPackage);
 
-        String body = String.format(
-                """
-                        <!DOCTYPE html>
-                        <html lang="pt_br">
-                        <head>
-                            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        </head>
-                        
-                        <body style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px;">
-                            <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-                                <div style="text-align: center;">
-                                    <h2 style="color: #18a758;">📦 Sua encomenda chegou!</h2>
-                                    <p style="font-size: 18px;"><b>Tokseg | Storage</b></p>
-                                </div>
-                        
-                                <p>Olá, <b style="color: #18a758;">%s</b></p>
-                        
-                                <p>Você recebeu uma nova encomenda entregue por <b>%s</b> no dia <b>%s</b>.</p>
-                        
-                                <p>Você tem até <b>%s</b> para retirar sua encomenda nos armários inteligentes do condomínio usando
-                                    sua senha cadastrada no aplicativo <b>Storage</b>.</p>
-                        
-                                <p style="color: #b30000;"><em>Após esse prazo, a encomenda poderá ser recolhida pela administração do
-                                        condomínio.</em></p>
-                        
-                                <!-- LOGO COMO CARIMBO -->
-                                <div style="text-align: center; margin-top: 20px;">
-                                    <img src="https://tokseg.com/assets/logo-DZ4izHdq.png" alt="Tokseg Logo" style="width: 250px; opacity: 0.9;">
-                                </div>
-                                <hr style="margin-top: 20px;">
-                  
-                                <p style="font-size: 13px; color: #777; text-align: center;">
-                                    © Tokseg | Storage – Segurança e praticidade para o seu condomínio.
-                                </p>
-                            </div>
-                        </body>
-                        
-                        </html>
-                        
-                        """,
-                nameResident,
-                nameDeliveryPerson,
-                deliveryDateTime.format(formatter),
-                maxPickDateTime.format(formatter));
+        boolean email = emailServices.sendEmail(to, subject, body, true);
 
-        EmailDTO email = new EmailDTO(to, subject, body, true);
-        emailServices.sendEmail(email);
+        notificationService.createNotification(new NotificationDTO(deliveryPackage,
+                email ? NotificationStatus.SENT : NotificationStatus.FAILED,
+                NotificationType.PENDING_PICKUP));
     }
 
 }

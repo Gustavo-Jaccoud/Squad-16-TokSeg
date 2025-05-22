@@ -12,6 +12,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 @Table(name = "notification")
@@ -48,6 +49,7 @@ public class Notification {
 
     public Notification(DeliveryPackage deliveryPackage, NotificationStatus notificationStatus, NotificationType notificationType) {
         this.deliveryPackage = deliveryPackage;
+        this.sentDatetime = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
         this.notificationStatus = notificationStatus;
         this.notificationType = notificationType;
     }

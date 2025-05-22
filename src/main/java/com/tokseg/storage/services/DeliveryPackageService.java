@@ -77,14 +77,14 @@ public class DeliveryPackageService {
     }
 
     private void sendEmailDelivery(DeliveryPackage deliveryPackage) {
-        String nameResident = deliveryPackage.getApartment().getUser().getName();
+        String nameResident = deliveryPackage.getApartment().getOwner().getName();
         String nameDeliveryPerson = deliveryPackage.getDeliveryPerson().getUser().getName();
         LocalDateTime deliveryDateTime = deliveryPackage.getDeliveryDatetime();
         LocalDateTime maxPickDateTime = deliveryPackage.getMaxPickupDatetime();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
 
-        String to = deliveryPackage.getApartment().getUser().getEmail();
+        String to = deliveryPackage.getApartment().getOwner().getEmail();
         String subject = "Tokseg | Storage - Você recebeu uma nova encomenda!";
 
         String body = String.format(

@@ -43,7 +43,7 @@ public class Apartment {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    private User user;
+    private User owner;
 
     @JsonProperty("blockId")
     public UUID getBlockId() {
@@ -52,7 +52,7 @@ public class Apartment {
 
     @JsonProperty("userId")
     public UUID getUserId() {
-        return user != null ? user.getId() : null;
+        return owner != null ? owner.getId() : null;
     }
     @Column(nullable = false)
     private String apartmentNumber;
@@ -61,9 +61,9 @@ public class Apartment {
     @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeliveryPackage> deliveryPackages;
 
-    public Apartment(Block block, User user, String apartmentNumber) {
+    public Apartment(Block block, User owner, String apartmentNumber) {
         this.block = block;
-        this.user = user;
+        this.owner = owner;
         this.apartmentNumber = apartmentNumber;
     }
 

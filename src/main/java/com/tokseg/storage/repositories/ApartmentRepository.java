@@ -8,6 +8,6 @@ import com.tokseg.storage.domain.apartment.Apartment;
 
 public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
     List<Apartment> findByBlock_Id(UUID blockId);
-    Apartment findByOwnerId(UUID userId);
+    Apartment findByOwner_Id(UUID userId);
 
 }

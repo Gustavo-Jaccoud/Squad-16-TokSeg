@@ -70,6 +70,7 @@ public class DeliveryPackage {
     @Enumerated(EnumType.STRING)
     @Column(name="status")
     private PackageStatus packageStatus;
+
     @Column(nullable = true)
     private LocalDateTime pickupDatetime;
 

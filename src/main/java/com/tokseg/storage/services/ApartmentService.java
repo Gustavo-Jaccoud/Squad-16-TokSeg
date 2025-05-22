@@ -69,7 +69,7 @@ public class ApartmentService {
     public ApiResponse getByIdUser(UUID id){
 
         if (userExists(id)) {
-            var response = apartmentRepository.findByOwnerId(id) ;
+            var response = apartmentRepository.findByOwner_Id(id) ;
             return ApiResponse.success(response,"Apartamentos desse usuário");
         }
         return ApiResponse.error("Usuário não encontrado");
@@ -89,7 +89,7 @@ public class ApartmentService {
                 Apartment  dataUpdateApartment = apartment.get();
                 dataUpdateApartment.setApartmentNumber(data.apartmentNumber());
                 dataUpdateApartment.setBlock(block);
-                dataUpdateApartment.setUser(user);
+                dataUpdateApartment.setOwner(user);
                 dataUpdateApartment = apartmentRepository.save( dataUpdateApartment);
                 return ApiResponse.success( dataUpdateApartment,"Apartamento atualizado com sucesso");
             }

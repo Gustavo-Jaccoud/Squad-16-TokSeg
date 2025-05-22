@@ -42,7 +42,7 @@ public class User implements UserDetails {
     private UserRole role;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "owner")
     private Apartment apartment;
 
     @JsonIgnore

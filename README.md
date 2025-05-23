@@ -1,42 +1,88 @@
 ![WhatsApp Image 2025-05-23 at 19 46 08_05f018fa](https://github.com/user-attachments/assets/7cfd8582-810f-4ce5-ab36-bf5a8697bdf9)
+📦 Armário Inteligente - Sistema de Gerenciamento de Encomendas
 <div align="center">
-📦 Armário Inteligente 
-Sistema de gerenciamento de encomendas automatizado notificações com banco de dados integrado.
+Header Image
 
-📌 Visão Geral
-O Armário Inteligente é uma solução que facilita o recebimento e a retirada de encomendas de forma segura e eficiente.
+GitHub license
+Status do Projeto
+Versão
 
-🔒 Acesso controlado por senha, QR Code ou biometria.
+</div>
+✨ Visão Geral
+O Armário Inteligente é uma solução inovadora que revoluciona o recebimento e a retirada de encomendas, combinando segurança, automação e praticidade em um único sistema.
 
-📲 Notificações via e-mail.
+Sistema em Funcionamento
 
-🗃️ Banco de dados para registro e histórico de entregas.
-
-🎯 Funcionalidades
+🌟 Destaques do Projeto
+<div align="center">
+🛡️ Segurança Avançada	📲 Comunicação Inteligente	📊 Gestão Eficiente
+Múltiplos métodos de autenticação para acesso seguro	Notificações em tempo real via e-mail	Painel administrativo completo
+Registro detalhado de todas as operações	Alertas personalizáveis	Relatórios e analytics
+</div>
+🔐 Funcionalidades Principais
 1. 🚪 Acesso Seguro aos Compartimentos
-Autenticação por:
+Sistema de autenticação multifatorial:
 
-🔑 
+🔑 Senha numérica personalizada
 
-2. 📢 Notificações 
-Alertas quando:
+📱 QR Code gerado dinamicamente
 
-📥 Uma encomenda é depositada.
+👆 Biometria para máxima segurança
 
-⏳ A encomenda está prestes a vencer o prazo de retirada.
+2. 📢 Sistema Inteligente de Notificações
+📥 Alerta de entrega: Notificação imediata quando uma encomenda é depositada
 
-❗ Tentativa de acesso não autorizado.
+⏳ Lembrete de retirada: Avisos quando o prazo está se esgotando
 
-3. 📊 Gestão e Relatórios
-   administrativo para:
+🚨 Segurança: Alertas sobre tentativas de acesso não autorizadas
 
-📅 Visualizar histórico de entregas.
+3. 📊 Painel de Gestão Completo
+📅 Histórico completo de todas as movimentações
 
-📦 Taxa de ocupação dos compartimentos.
+📦 Monitoramento em tempo real da ocupação dos compartimentos
 
-4. 🤖 Automações Avançadas (Futuras atualizações)
-   
-🖥️ Visão computacional para reconhecer tipo de encomenda.
+📈 Relatórios detalhados e exportáveis
 
-🤖 Chatbot para consultas via WhatsApp/Telegram.
+4. 🚀 Funcionalidades Futuras (Roadmap)
+👁️ Visão computacional para classificação automática de encomendas
+
+🤖 Chatbot integrado para atendimento via WhatsApp/Telegram
+
+🔗 API pública para integração com outros sistemas
+
+🛠️ Tecnologias Utilizadas
+<div align="center">
+Tecnologias
+
+</div>
+Backend: Python + Django
+
+Banco de Dados: PostgreSQL
+
+Frontend: React.js
+
+Hardware: Raspberry Pi + Arduino
+
+Comunicação: API REST + WebSockets
+
+📥 Como Contribuir
+Faça um fork do projeto
+
+Crie sua branch (git checkout -b feature/nova-feature)
+
+Commit suas mudanças (git commit -m 'Adiciona nova feature')
+
+Push para a branch (git push origin feature/nova-feature)
+
+Abra um Pull Request
+
+📄 Licença
+Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
+
+<div align="center">
+✨ Transformando a maneira como você recebe encomendas ✨
+
+Saiba Mais
+Documentação
+
 </div>

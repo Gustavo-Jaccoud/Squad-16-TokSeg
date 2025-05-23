@@ -82,9 +82,9 @@ public class DeliveryPackageService {
 
     public ApiResponse pickUpDeliveryPackage(PickUpDeliveryPackageDTO data) {
 
-        String password = new BCryptPasswordEncoder().encode(data.password());
-        Optional<DeliveryPackage> optionalPackage =
-                deliveryPackageRepository.findTopByCompartment_IdOrderByDeliveryDatetimeDesc(data.compartmentId());
+        BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+        Optional<DeliveryPackage> optionalPackage = deliveryPackageRepository
+                .findTopByCompartment_IdOrderByDeliveryDatetimeDesc(data.compartmentId());
 
         if (optionalPackage.isEmpty()) {
             return ApiResponse.error("Nenhuma encomenda encontrada para este compartimento.");
@@ -93,18 +93,18 @@ public class DeliveryPackageService {
         DeliveryPackage deliveryPackage = optionalPackage.get();
         User owner = deliveryPackage.getApartment().getOwner();
 
-
-        boolean isOwner = owner.getUsername().equals(data.username()) && owner.getPassword().equals(password);
+        boolean isOwner = owner.getUsername().equals(data.username())
+                && encode.matches(data.password(), owner.getPassword());
 
         System.out.println(owner.getUsername());
         System.out.println(data.username());
         System.out.println(owner.getPassword());
-        System.out.println(password);
 
         if (!isOwner) {
 
             User admin = userRepository.findByEmail(data.username());
-            if (admin != null && admin.getPassword().equals(password) && admin.getRole() == UserRole.ADMIN) {
+            if (admin != null && encode.matches(data.password(), admin.getPassword())
+                    && admin.getRole() == UserRole.ADMIN) {
 
                 if (deliveryPackage.getDeliveryDatetime().isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))) {
                     deliveryPackage.setPickupDatetime(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
@@ -120,7 +120,6 @@ public class DeliveryPackageService {
             return ApiResponse.error("Credenciais inválidas.");
         }
 
-
         deliveryPackage.setPickupDatetime(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
         deliveryPackage.setPickedUpBy(owner);
         deliveryPackage.setPackageStatus(PackageStatus.PICKED_UP);
@@ -128,7 +127,6 @@ public class DeliveryPackageService {
 
         return ApiResponse.success(deliveryPackage.getId(), "Encomenda retirada com sucesso pelo proprietário.");
     }
-
 
     private boolean deliveryPersonExists(UUID id) {
         return deliveryPersonRepository.findById(id).isPresent();

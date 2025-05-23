@@ -1,7 +1,8 @@
-TOKSEG
+TOKSEG![logo-DZ4izHdq](https://github.com/user-attachments/assets/9d492d15-ec7c-4ee7-a00f-025b758bad1b)
+
 
 📦 Armário Inteligente 
-Sistema de gerenciamento de encomendas automatizado notificações com notifição e banco de dados integrado.
+Sistema de gerenciamento de encomendas automatizado notificações com banco de dados integrado.
 
 📌 Visão Geral
 O Armário Inteligente é uma solução que facilita o recebimento e a retirada de encomendas de forma segura e eficiente.

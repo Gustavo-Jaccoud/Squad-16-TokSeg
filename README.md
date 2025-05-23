@@ -7,35 +7,37 @@ Sistema de gerenciamento de encomendas automatizado notificações com banco de 
 📌 Visão Geral
 O Armário Inteligente é uma solução que facilita o recebimento e a retirada de encomendas de forma segura e eficiente.
 
-🔒 Acesso controlado por senha, QR Code ou biometria.
+🔒 Acesso controlado por senha
 
 📲 Notificações via e-mail.
 
-🗃️ Banco de dados para registro e histórico de entregas.
+🗃️ Banco de dados para registro e histórico de entregas via Docker.
 
 🎯 Funcionalidades
-1. 🚪 Acesso Seguro aos Compartimentos
+🚪 Acesso Seguro aos Compartimentos
 Autenticação por:
 
-🔑 
+🔑 Usuario e Senha
 
-2. 📢 Notificações 
+📢 Notificações 
 Alertas quando:
 
 📥 Uma encomenda é depositada.
 
 ⏳ A encomenda está prestes a vencer o prazo de retirada.
 
-❗ Tentativa de acesso não autorizado.
+⏳ A encomenda pega pelo adm
 
-3. 📊 Gestão e Relatórios
+❗ Recuperação de senha.
+
+📊 Gestão e Relatórios
    administrativo para:
 
 📅 Visualizar histórico de entregas.
 
 📦 Taxa de ocupação dos compartimentos.
 
-4. 🤖 Automações Avançadas (Futuras atualizações)
+🤖 Automações Avançadas (Futuras atualizações)
    
 🖥️ Visão computacional para reconhecer tipo de encomenda.
 

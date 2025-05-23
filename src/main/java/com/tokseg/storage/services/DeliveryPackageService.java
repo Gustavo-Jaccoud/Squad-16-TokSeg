@@ -6,6 +6,7 @@ import com.tokseg.storage.domain.deliveryPackage.DTOs.DeliveryPackageDTO;
 import com.tokseg.storage.domain.deliveryPackage.DTOs.PickUpDeliveryPackageDTO;
 import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
 import com.tokseg.storage.domain.deliveryPackage.PackageStatus;
+import com.tokseg.storage.domain.deliveryPackage.responsePickUpDeliveryPackageDTO;
 import com.tokseg.storage.domain.deliveryPerson.DeliveryPerson;
 import com.tokseg.storage.domain.notification.DTOs.NotificationDTO;
 import com.tokseg.storage.domain.notification.NotificationStatus;
@@ -96,10 +97,6 @@ public class DeliveryPackageService {
         boolean isOwner = owner.getUsername().equals(data.username())
                 && encode.matches(data.password(), owner.getPassword());
 
-        System.out.println(owner.getUsername());
-        System.out.println(data.username());
-        System.out.println(owner.getPassword());
-
         if (!isOwner) {
 
             User admin = userRepository.findByEmail(data.username());
@@ -111,7 +108,9 @@ public class DeliveryPackageService {
                     deliveryPackage.setPickedUpBy(admin);
                     deliveryPackage.setPackageStatus(PackageStatus.PICKED_UP);
                     deliveryPackageRepository.save(deliveryPackage);
-                    return ApiResponse.success(deliveryPackage.getId(), "Encomenda retirada pela administração.");
+                    return ApiResponse.success(
+                            new responsePickUpDeliveryPackageDTO(true, deliveryPackage.getCompartmentId()),
+                            "Encomenda retirada pela administração.");
                 } else {
                     return ApiResponse.error("A encomenda ainda está dentro do prazo, apenas o morador pode retirar.");
                 }
@@ -125,7 +124,8 @@ public class DeliveryPackageService {
         deliveryPackage.setPackageStatus(PackageStatus.PICKED_UP);
         deliveryPackageRepository.save(deliveryPackage);
 
-        return ApiResponse.success(deliveryPackage.getId(), "Encomenda retirada com sucesso pelo proprietário.");
+        return ApiResponse.success(new responsePickUpDeliveryPackageDTO(true, deliveryPackage.getCompartmentId()),
+                "Encomenda retirada com sucesso pelo proprietário.");
     }
 
     private boolean deliveryPersonExists(UUID id) {

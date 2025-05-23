@@ -1,4 +1,4 @@
-![logo-DZ4izHdq](https://github.com/user-attachments/assets/9d492d15-ec7c-4ee7-a00f-025b758bad1b)
+![WhatsApp Image 2025-05-23 at 19 46 08_05f018fa](https://github.com/user-attachments/assets/7cfd8582-810f-4ce5-ab36-bf5a8697bdf9)
 
 
 📦 Armário Inteligente 

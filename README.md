@@ -1,4 +1,4 @@
-TOKSEG![logo-DZ4izHdq](https://github.com/user-attachments/assets/9d492d15-ec7c-4ee7-a00f-025b758bad1b)
+![logo-DZ4izHdq](https://github.com/user-attachments/assets/9d492d15-ec7c-4ee7-a00f-025b758bad1b)
 
 
 📦 Armário Inteligente 

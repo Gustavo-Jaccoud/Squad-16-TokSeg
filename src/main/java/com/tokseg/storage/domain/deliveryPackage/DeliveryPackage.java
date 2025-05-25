@@ -27,7 +27,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"deliveryPerson", "compartment", "apartment", "pickedUpBy"})
+@JsonIgnoreProperties({ "deliveryPerson", "compartment", "apartment", "pickedUpBy" })
 public class DeliveryPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -67,8 +67,9 @@ public class DeliveryPackage {
     private LocalDateTime deliveryDatetime;
     @Column(nullable = false)
     private LocalDateTime maxPickupDatetime;
+
     @Enumerated(EnumType.STRING)
-    @Column(name="status")
+    @Column(name = "status")
     private PackageStatus packageStatus;
 
     @Column(nullable = true)

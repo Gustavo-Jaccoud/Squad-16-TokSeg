@@ -42,8 +42,8 @@ public class User implements UserDetails {
     private UserRole role;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "owner")
-    private Apartment apartment;
+    @OneToMany(mappedBy = "owner")
+    private List<Apartment> apartment;
 
     @JsonIgnore
     @OneToOne(mappedBy = "user")

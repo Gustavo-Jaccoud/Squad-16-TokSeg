@@ -31,12 +31,14 @@ public class ApartmentService {
         if (userExists(data.userId())) {
 
             if (blockExists(data.blockId())) {
+
                 Block block = blockRepository.findById(data.blockId()).get();
                 User user = userRepository.findById(data.userId()).get();
 
                 Apartment newApartment = new Apartment(block,user, data.apartmentNumber());
                 apartmentRepository.save(newApartment);
                 return ApiResponse.success(newApartment, "Apartamento criado com sucesso");
+
             }
 
             return ApiResponse.error("Bloco não encontrado");

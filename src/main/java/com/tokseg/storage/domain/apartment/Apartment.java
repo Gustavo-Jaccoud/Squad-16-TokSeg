@@ -29,7 +29,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"user","block"})
+@JsonIgnoreProperties({"owner","block"})
 public class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -40,7 +40,7 @@ public class Apartment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Block block;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private User owner;

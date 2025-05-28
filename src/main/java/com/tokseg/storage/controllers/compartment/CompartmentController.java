@@ -1,5 +1,6 @@
 package com.tokseg.storage.controllers.compartment;
 
+import com.tokseg.storage.domain.compartment.DTOs.AvailableCompartmentRequestDTO;
 import com.tokseg.storage.domain.compartment.DTOs.CompartmentDTO;
 import com.tokseg.storage.response.ApiResponse;
 import com.tokseg.storage.services.CompartmentService;
@@ -68,5 +69,16 @@ public class CompartmentController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @PostMapping("/firstAvailable")
+
+    public ResponseEntity firstAvailable(@RequestBody @Valid AvailableCompartmentRequestDTO data){
+        ApiResponse response = compartmentService.firstAvailable(data);
+        if (response.data() != null)
+            return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).body(response);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
     }
 }

@@ -19,6 +19,7 @@ public class CabinetService {
     @Autowired
     CondominiumRepository condominiumRepository;
 
+
     public ApiResponse createCabinet(CabinetDTO data){
 
 

@@ -69,6 +69,10 @@ public class DeliveryPackageService {
         Apartment apartment = apartmentRepository.findById(data.apartmentId()).get();
         DeliveryPackage newDeliveryPackage = new DeliveryPackage(deliveryPerson, compartment, apartment);
 
+        compartment.setOccupied(true);
+
+        compartmentRepository.save(compartment);
+
         deliveryPackageRepository.save(newDeliveryPackage);
 
         sendEmailDelivery(newDeliveryPackage);

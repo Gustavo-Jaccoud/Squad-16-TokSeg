@@ -2,6 +2,7 @@ package com.tokseg.storage.services;
 
 import com.tokseg.storage.domain.cabinet.Cabinet;
 import com.tokseg.storage.domain.compartment.Compartment;
+import com.tokseg.storage.domain.compartment.DTOs.AvailableCompartmentRequestDTO;
 import com.tokseg.storage.domain.compartment.DTOs.CompartmentDTO;
 import com.tokseg.storage.repositories.CabinetRepository;
 import com.tokseg.storage.repositories.CompartmentRepository;
@@ -9,6 +10,7 @@ import com.tokseg.storage.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,6 +22,20 @@ public class CompartmentService {
     CabinetRepository cabinetRepository;
 
 
+    public ApiResponse firstAvailable(AvailableCompartmentRequestDTO data){
+
+        List<Cabinet> cabinets = cabinetRepository.findByCondominium_Id(data.condominiumId());
+        Compartment compartment;
+
+        for(Cabinet cabinet : cabinets){
+            compartment = compartmentRepository.findFirstByCabinet_IdAndIsOccupiedAndSize(
+                    cabinet.getId(),false, data.size());
+            if (compartment != null){
+                return ApiResponse.success(compartment, "Coloque a entrega no compartimento indicado");
+            }
+        }
+        return  ApiResponse.error("Nenhum compartimento disponivel por favor entre em contato com administração");
+    }
 
     public ApiResponse createCompartment (CompartmentDTO data){
 
@@ -34,6 +50,7 @@ public class CompartmentService {
         return ApiResponse.error("Armario não encontrado");
 
     }
+
     public ApiResponse getAllCompartment(){
         return ApiResponse.success(compartmentRepository.findAll(), "Todos os compartimentos");
     }

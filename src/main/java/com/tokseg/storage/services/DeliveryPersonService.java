@@ -5,6 +5,8 @@ import com.tokseg.storage.domain.deliveryPerson.DTOs.DeliveryPersonDTO;
 import com.tokseg.storage.domain.deliveryPerson.DTOs.DeliveryPersonResponseDTO;
 import com.tokseg.storage.domain.deliveryPerson.DeliveryPerson;
 import com.tokseg.storage.domain.user.DTOs.RegisterDTO;
+import com.tokseg.storage.domain.user.User;
+import com.tokseg.storage.domain.user.UserRole;
 import com.tokseg.storage.repositories.DeliveryPersonRepository;
 import com.tokseg.storage.repositories.UserRepository;
 import com.tokseg.storage.response.ApiResponse;
@@ -50,19 +52,20 @@ public class DeliveryPersonService {
     @Transactional
     public ApiResponse getAllDeliveryPerson(){
 
-        List<Object[]> deliveryPersons = deliveryPersonRepository.findAllWithUserData();
+        List<DeliveryPerson> deliveryPersons = deliveryPersonRepository.findAll();
 
 
         List<DeliveryPersonResponseDTO> deliveryPersonDtos = new ArrayList<>();
 
 
-        for (Object[] row : deliveryPersons) {
-            UUID id = UUID.fromString(row[0].toString());
-            String cpf = (String) row[1];
-            String email = (String) row[2];
-            String name = (String) row[3];
-            String telephone = (String) row[4];
-            String role = (String) row[5];
+        for (DeliveryPerson deliveryPerson : deliveryPersons) {
+            UUID id = deliveryPerson.getId();
+            String cpf = deliveryPerson.getCpf();
+            User user = deliveryPerson.getUser();
+            String email = user.getEmail();
+            String name = user.getName();
+            String telephone = user.getTelephone();
+            UserRole role = user.getRole();
 
             deliveryPersonDtos.add(new DeliveryPersonResponseDTO(id, cpf,role, name, email, telephone));
         }
@@ -76,25 +79,20 @@ public class DeliveryPersonService {
 
         if (deliveryPersonOpt.isPresent()) {
             var deliveryPerson = deliveryPersonOpt.get();
-            var userOpt = userRepository.findById(deliveryPerson.getUserId());
 
-            if (userOpt.isPresent()) {
-                var user = userOpt.get();
+                var user = deliveryPerson.getUser();
 
                 DeliveryPersonResponseDTO deliveryPersonResponseDTO = new DeliveryPersonResponseDTO(
                         deliveryPerson.getId(),
                         deliveryPerson.getCpf(),
-                        user.getRole().toString(),
+                        user.getRole(),
                         user.getName(),
                         user.getEmail(),
                         user.getTelephone()
                 );
 
                 return ApiResponse.success(deliveryPersonResponseDTO, "Entregador encontrado");
-            } else {
-                return ApiResponse.error("Usuário associado não encontrado");
             }
-        }
 
         return ApiResponse.error("Entregador não encontrado");
     }

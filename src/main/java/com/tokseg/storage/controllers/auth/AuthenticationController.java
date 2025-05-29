@@ -48,13 +48,10 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
 
-        var user = service.registerUser(data);
+        ApiResponse response = service.registerUser(data);
 
-        if(user==null){
-            ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .body(ApiResponse.success(null, "Usuário Criado com sucesso"));
+        HttpStatus status = response.status().equals("success") ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(response);
     }
 
     @PostMapping("/recoverpassword")

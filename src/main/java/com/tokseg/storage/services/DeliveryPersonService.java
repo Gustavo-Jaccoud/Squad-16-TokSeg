@@ -31,7 +31,7 @@ public class DeliveryPersonService {
 
     @Transactional
     public ApiResponse createDeliveryPerson(DeliveryPersonDTO data){
-        var user = authService.registerUser(new RegisterDTO(
+        var user = authService.createUserIfEmailNotExists(new RegisterDTO(
                 data.email(),
                 data.password(),
                 "DELIVERYPERSON",

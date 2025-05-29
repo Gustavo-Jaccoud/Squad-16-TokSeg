@@ -46,4 +46,15 @@ public class EmailContentBuilder {
             throw new RuntimeException("Erro ao ler template de e-mail", e);
         }
     }
+
+    public  String buildWelcomeNotification(String name){
+        try {
+            String body = Files.readString(Paths.get("src/main/resources/emails/welcome-notification.html"));
+            return String.format(body,name);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Erro ao ler template de e-mail", e);
+        }
+
+    }
 }

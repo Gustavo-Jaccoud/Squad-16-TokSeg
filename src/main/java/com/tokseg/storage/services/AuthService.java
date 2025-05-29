@@ -24,36 +24,72 @@ public class AuthService {
     @Autowired
     EmailServices emailServices;
 
-    public User registerUser(RegisterDTO data){
-        if (userRepository.findByEmail(data.email().toLowerCase())!=null){
+    public ApiResponse registerUser(RegisterDTO data) {
+        User user = createUserIfEmailNotExists(data);
+
+        if (user == null) {
+            return ApiResponse.error("E-mail já está em uso");
+        }
+
+        boolean emailSent = emailServices.sendEmail(
+                user.getEmail(),
+                "Tokseg | Storage - Bem-vindo!",
+                emailContentBuilder.buildWelcomeNotification(user.getName()),
+                true
+        );
+
+        if (emailSent) {
+            return ApiResponse.success(null, "Usuário cadastrado com sucesso");
+        } else {
+            return ApiResponse.success(null, "Usuário cadastrado, mas falha ao enviar e-mail de boas-vindas");
+        }
+    }
+
+    protected User createUserIfEmailNotExists(RegisterDTO data) {
+        if (userRepository.findByEmail(data.email().toLowerCase()) != null) {
             return null;
         }
+
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(UserRole.valueOf(data.role()), data.telephone(), data.name(), encryptedPassword, data.email().toLowerCase());
+
+        User newUser = new User(
+                UserRole.valueOf(data.role()),
+                data.telephone(),
+                data.name(),
+                encryptedPassword,
+                data.email().toLowerCase()
+        );
 
         return userRepository.save(newUser);
     }
-    public ApiResponse recoverPassword(String email){
-        var user = userRepository.findByEmail(email);
-        if(user != null){
-            String newPassword = generateRandomPassword(6);
-            String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
-            user.setPassword(encryptedPassword);
-            userRepository.save(user);
 
 
-            boolean emailStats = emailServices.sendEmail(email,
-                    "Tokseg | Storage - Nova senha!",
-                    emailContentBuilder.buildPasswordRecoverNotification(user.getName(), newPassword),
-                    true);
-            if (emailStats){
-                return ApiResponse.success(null,"Sua nova senha foi enviada para seu email");
-            }
+    public ApiResponse recoverPassword(String email) {
+        var user = userRepository.findByEmail(email.toLowerCase());
 
+        if (user == null) {
+            return ApiResponse.error("E-mail não cadastrado");
         }
-        return ApiResponse.error("Erro ao tentar recuperar senha");
 
+        String newPassword = generateRandomPassword(6);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+
+        boolean emailSent = emailServices.sendEmail(
+                email,
+                "Tokseg | Storage - Nova senha!",
+                emailContentBuilder.buildPasswordRecoverNotification(user.getName(), newPassword),
+                true
+        );
+
+        if (emailSent) {
+            return ApiResponse.success(null, "Sua nova senha foi enviada para seu e-mail");
+        }
+
+        return ApiResponse.error("Usuário atualizado, mas falha ao enviar o e-mail com a nova senha");
     }
+
 
 
     private static String generateRandomPassword(int length) {

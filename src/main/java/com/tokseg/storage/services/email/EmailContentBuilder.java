@@ -1,5 +1,7 @@
 package com.tokseg.storage.services.email;
 
+import com.tokseg.storage.domain.cabinet.Cabinet;
+import com.tokseg.storage.domain.compartment.Compartment;
 import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,11 @@ public class EmailContentBuilder {
 
         String nameResident = deliveryPackage.getApartment().getOwner().getName();
         String nameDeliveryPerson = deliveryPackage.getDeliveryPerson().getUser().getName();
+        Compartment compartment = deliveryPackage.getCompartment();
+        String compartmentName = compartment.getName();
+        Cabinet cabinet = compartment.getCabinet();
+        String cabinetName = cabinet.getName();
+        String cabinetLocation = cabinet.getLocation();
         LocalDateTime deliveryDateTime = deliveryPackage.getDeliveryDatetime();
         LocalDateTime maxPickDateTime = deliveryPackage.getMaxPickupDatetime();
 
@@ -29,6 +36,9 @@ public class EmailContentBuilder {
                     nameResident,
                     nameDeliveryPerson,
                     deliveryDateTime.format(formatter),
+                    cabinetName,
+                    cabinetLocation,
+                    compartmentName,
                     maxPickDateTime.format(formatter)
             );
 

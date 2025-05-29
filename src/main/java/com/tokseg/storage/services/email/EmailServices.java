@@ -32,6 +32,7 @@ public class EmailServices {
             }
 
             mailSender.send(mimeMessage);
+
             return true;
 
         } catch (MessagingException e) {

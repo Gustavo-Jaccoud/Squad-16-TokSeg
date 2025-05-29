@@ -59,9 +59,9 @@ public class AuthenticationController {
 
     @PostMapping("/recoverpassword")
     public ResponseEntity recoverPassword(@RequestBody @Valid RecoverPasswordDTO data){
-        String response = service.recoverPassword(data.email().toLowerCase());
+        ApiResponse response = service.recoverPassword(data.email().toLowerCase());
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.success(response, "Email Enviado com sucesso"));
+        HttpStatus status = response.status().equals("success") ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(response);
     }
 }

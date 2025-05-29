@@ -36,4 +36,14 @@ public class EmailContentBuilder {
             throw new RuntimeException("Erro ao ler template de e-mail", e);
         }
     }
+
+    public String buildPasswordRecoverNotification(String name, String password){
+        try {
+            String body = Files.readString(Paths.get("src/main/resources/emails/password-recover-notification.html"));
+            return String.format(body,name, password);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Erro ao ler template de e-mail", e);
+        }
+    }
 }

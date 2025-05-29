@@ -5,6 +5,7 @@ public enum NotificationType {
         PICKED_UP("picked_up"),
         RETRIEVED_BY_STAFF("retrieved_by_staff");
 
+
         private String type;
         NotificationType(String type){
             this.type = type;

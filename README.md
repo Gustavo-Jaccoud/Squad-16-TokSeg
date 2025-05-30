@@ -42,5 +42,78 @@ Alertas quando:
 🖥️ Visão computacional para reconhecer tipo de encomenda.
 
 🤖 Chatbot para consultas via WhatsApp/Telegram.
+
+
+📊Como executar:
 </div>
-deixe extremamente bonito aos olhos de qualquer pessoa esse readme do github
+# Armário Inteligente
+
+## Descrição Geral
+
+Permite o registro, notificação e auditoria de entregas, integrando diferentes perfis de usuários (morador, porteiro, administrador) e mantendo o controle dos compartimentos do armário.
+
+## Requisitos Técnicos
+
+- Java 17 ou superior
+- Maven 3.6 ou superior
+- Spring Boot 3.x
+- Docker
+- IDE compatível com Java (recomendado: IntelliJ IDEA ou Eclipse)
+
+## Instalação e Configuração
+
+4. Execute a aplicação:
+```bash
+# Clone o repositório
+$ git clone https://github.com/Gustavo-Jaccoud/Squad-16-TokSeg.git
+
+# Acesse o diretório
+$ cd Squad-16-TokSeg
+
+# Execute via Docker Compose
+$ docker-compose up --build
+```
+
+A aplicação estará disponível em `http://localhost:8080`
+
+---
+
+## Estrutura do Projeto
+
+```
+armario-inteligente/
+├── Dockerfile
+├── docker-compose.yml
+├── pom.xml
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   └── resources/
+│   └── test/
+├── .gitignore
+├── README.md
+└── ...
+```
+
+---
+
+## Camadas do Sistema
+
+Swagger (OpenAPI) para documentação da API
+## Fluxos Principais
+
+### Cadastro de Encomenda
+1. Sistema associa encomenda a um usuário e compartimento.
+2. Compartimento é marcado como ocupado.
+3. Notificação é enviada ao usuário.
+
+
+### Gerenciamento de Compartimentos
+- Compartimentos podem ser consultados, criados ou removidos.
+- Estado de ocupação é atualizado.
+
+## Suporte
+
+Para suporte, entre em contato através de:
+- Email: 
+- Issues do GitHub:

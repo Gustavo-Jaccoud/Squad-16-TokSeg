@@ -103,11 +103,10 @@ Swagger (OpenAPI) para documentação da API
 ## Fluxos Principais
 
 ### Cadastro de Encomenda
-1. Porteiro registra uma encomenda via endpoint `/api/encomendas`.
-2. Sistema associa encomenda a um usuário e compartimento.
-3. Compartimento é marcado como ocupado.
-4. Notificação é enviada ao usuário.
-5. Registro de auditoria é criado.
+1. Sistema associa encomenda a um usuário e compartimento.
+2. Compartimento é marcado como ocupado.
+3. Notificação é enviada ao usuário.
+
 
 ### Gerenciamento de Compartimentos
 - Compartimentos podem ser consultados, criados ou removidos.

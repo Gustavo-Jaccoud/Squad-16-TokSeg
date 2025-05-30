@@ -13,7 +13,7 @@ INSERT INTO public.apartment (id, apartment_number, block_id, user_id) VALUES('8
 
 INSERT INTO public.cabinet (id, location, name, status, condominium_id) VALUES ('d373d742-860e-4382-ae09-e1bbe8e579e2', 'Terreo do bloco b', 'B001', true, '45280fc2-5f96-40aa-8d3d-691fd96e838a');
 
-INSERT INTO public.compartment (id, is_occupied, name, size, cabinet_id) VALUES ('559321eb-8d97-4783-a03e-21ef3dc9a6f0', false, 'B001', 'SMALL', 'd373d742-860e-4382-ae09-e1bbe8e579e2');
+INSERT INTO public.compartment (id, is_occupied, name, size, cabinet_id) VALUES ('559321eb-8d97-4783-a03e-21ef3dc9a6f0', true, 'B001', 'SMALL', 'd373d742-860e-4382-ae09-e1bbe8e579e2');
 
 INSERT INTO public.delivery_package (delivery_datetime, max_pickup_datetime, pickup_datetime, apartment_id, compartment_id, delivery_person_id, id, picked_up_by, status) VALUES ('2025-05-20 20:14:52.532889', '2025-05-21 20:14:52.532889', NULL, '82c527c0-b510-4bfb-89d8-00c71874f656', '559321eb-8d97-4783-a03e-21ef3dc9a6f0', 'bec22f7a-0086-4282-9e86-9408bfa57e7c', 'e01be021-b2f4-4b51-8940-3e05d04f36e3', NULL, 'PENDING_PICKUP');
 

@@ -67,4 +67,26 @@ public class EmailContentBuilder {
         }
 
     }
+
+    public String buildPickedUpNotification(String name, LocalDateTime datetime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+        try {
+            String body = Files.readString(Paths.get("src/main/resources/emails/picked-up-notification.html"));
+            return String.format(body,name, datetime.format(formatter));
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Erro ao ler template de e-mail", e);
+        }
+    }
+
+    public String buildRetrievedByStaffNotification(String name,LocalDateTime datetime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+        try {
+            String body = Files.readString(Paths.get("src/main/resources/emails/retrieved-by-staff-notification.html"));
+            return String.format(body,name, datetime.format(formatter));
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Erro ao ler template de e-mail", e);
+        }
+    }
 }

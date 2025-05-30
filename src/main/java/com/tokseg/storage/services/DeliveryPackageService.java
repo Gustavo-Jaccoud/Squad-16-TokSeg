@@ -53,6 +53,7 @@ public class DeliveryPackageService {
     @Autowired
     UserRepository userRepository;
 
+
     public ApiResponse createDeliveryPackage(DeliveryPackageDTO data) {
 
         if (!deliveryPersonExists(data.deliveryPersonId())) {
@@ -68,6 +69,10 @@ public class DeliveryPackageService {
         Compartment compartment = compartmentRepository.findById(data.compartmentId()).get();
         Apartment apartment = apartmentRepository.findById(data.apartmentId()).get();
         DeliveryPackage newDeliveryPackage = new DeliveryPackage(deliveryPerson, compartment, apartment);
+
+        if (compartment.isOccupied()){
+            return ApiResponse.error("Compartimento ocupado.");
+        }
 
         compartment.setOccupied(true);
 
@@ -107,11 +112,18 @@ public class DeliveryPackageService {
             if (admin != null && encode.matches(data.password(), admin.getPassword())
                     && admin.getRole() == UserRole.ADMIN) {
 
-                if (deliveryPackage.getDeliveryDatetime().isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))) {
+                if (deliveryPackage.getMaxPickupDatetime().isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))) {
                     deliveryPackage.setPickupDatetime(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
                     deliveryPackage.setPickedUpBy(admin);
                     deliveryPackage.setPackageStatus(PackageStatus.PICKED_UP);
                     deliveryPackageRepository.save(deliveryPackage);
+
+                    String body = emailContentBuilder.buildRetrievedByStaffNotification(owner.getName(), deliveryPackage.getPickupDatetime());
+
+                    emailServices.sendEmail(owner.getEmail(),
+                            "Tokseg | Storage – Confirmação de retirada pela administração.",
+                            body, true);
+
                     return ApiResponse.success(
                             new responsePickUpDeliveryPackageDTO(true, deliveryPackage.getCompartmentId()),
                             "Encomenda retirada pela administração.");
@@ -127,6 +139,12 @@ public class DeliveryPackageService {
         deliveryPackage.setPickedUpBy(owner);
         deliveryPackage.setPackageStatus(PackageStatus.PICKED_UP);
         deliveryPackageRepository.save(deliveryPackage);
+
+        String body = emailContentBuilder.buildPickedUpNotification(owner.getName(), deliveryPackage.getPickupDatetime());
+
+        emailServices.sendEmail(owner.getEmail(),
+                "Tokseg | Storage – Confirmação de retirada da sua encomenda.",
+                body, true);
 
         return ApiResponse.success(new responsePickUpDeliveryPackageDTO(true, deliveryPackage.getCompartmentId()),
                 "Encomenda retirada com sucesso pelo proprietário.");

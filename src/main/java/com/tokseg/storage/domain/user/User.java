@@ -64,9 +64,27 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+        } else if (this.role == UserRole.RESIDENT) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_RESIDENT"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+        } else if (this.role == UserRole.DELIVERYPERSON) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_DELIVERYPERSON"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+        } else {
+            // fallback, caso tenha outras roles não previstas
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
+
 
     @Override
     public String getPassword() {

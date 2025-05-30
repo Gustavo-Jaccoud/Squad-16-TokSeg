@@ -53,7 +53,7 @@ public class ApartmentController {
     }
 
     @GetMapping("getByIdUser/{id}")
-    public ResponseEntity getByIdCondominium(@PathVariable UUID id){
+    public ResponseEntity getByIdUser(@PathVariable UUID id){
         var response = apartmentService.getByIdUser(id);
         if (response.data() != null)
             return ResponseEntity.status(HttpStatus.OK).body(response);

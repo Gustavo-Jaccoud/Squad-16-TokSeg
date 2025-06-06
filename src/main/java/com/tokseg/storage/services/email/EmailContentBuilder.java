@@ -6,6 +6,8 @@ import com.tokseg.storage.domain.deliveryPackage.DeliveryPackage;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -30,7 +32,11 @@ public class EmailContentBuilder {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
         try {
-            String body = Files.readString(Paths.get("src/main/resources/emails/delivery-notification.html"));
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("emails/delivery-notification.html");
+            if (inputStream == null) {
+                throw new RuntimeException("Arquivo de template não encontrado.");
+            }
+            String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             return String.format(
                     body,
                     nameResident,
@@ -49,7 +55,11 @@ public class EmailContentBuilder {
 
     public String buildPasswordRecoverNotification(String name, String password){
         try {
-            String body = Files.readString(Paths.get("src/main/resources/emails/password-recover-notification.html"));
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("emails/password-recover-notification.html");
+            if (inputStream == null) {
+                throw new RuntimeException("Arquivo de template não encontrado.");
+            }
+            String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             return String.format(body,name, password);
         }
         catch (IOException e) {
@@ -59,7 +69,11 @@ public class EmailContentBuilder {
 
     public  String buildWelcomeNotification(String name){
         try {
-            String body = Files.readString(Paths.get("src/main/resources/emails/welcome-notification.html"));
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("emails/welcome-notification.html");
+            if (inputStream == null) {
+                throw new RuntimeException("Arquivo de template não encontrado.");
+            }
+            String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             return String.format(body,name);
         }
         catch (IOException e) {
@@ -71,7 +85,11 @@ public class EmailContentBuilder {
     public String buildPickedUpNotification(String name, LocalDateTime datetime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
         try {
-            String body = Files.readString(Paths.get("src/main/resources/emails/picked-up-notification.html"));
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("emails/picked-up-notification.html");
+            if (inputStream == null) {
+                throw new RuntimeException("Arquivo de template não encontrado.");
+            }
+            String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             return String.format(body,name, datetime.format(formatter));
         }
         catch (IOException e) {
@@ -82,7 +100,11 @@ public class EmailContentBuilder {
     public String buildRetrievedByStaffNotification(String name,LocalDateTime datetime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
         try {
-            String body = Files.readString(Paths.get("src/main/resources/emails/retrieved-by-staff-notification.html"));
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("emails/retrieved-by-staff-notification.html");
+            if (inputStream == null) {
+                throw new RuntimeException("Arquivo de template não encontrado.");
+            }
+            String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             return String.format(body,name, datetime.format(formatter));
         }
         catch (IOException e) {

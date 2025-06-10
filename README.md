@@ -170,9 +170,9 @@ Garanta que o *JDK 17 ou superior* esteja instalado e configurado corretamente e
 	Edite o arquivo `src/main/resources/application.properties`.
     - Ajuste as configurações de conexão com o banco de dados:
       ```properties
-      spring.datasource.url =url-banco
-      spring.datasource.username =usuario-banco
-      spring.datasource.password =senha-banco
+      spring.datasource.url=url-banco
+      spring.datasource.username=usuario-banco
+      spring.datasource.password=senha-banco
       ```
     - *Configure as propriedades de e-mail* conforme detalhado na seção 2. Configure as Variáveis de Ambiente para E-mail (Obrigatório).
 5.  *Build da Aplicação (Local):*
